@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hibernateproject.uijavaswing;
+package hibernateproject.uijavaswing.customizedcomponent;
 
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.JFrame;

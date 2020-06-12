@@ -5,6 +5,11 @@
  */
 package hibernateproject.uijavaswing;
 
+import hibernateproject.uijavaswing.customizedcomponent.RoundedPanel;
+import hibernateproject.uijavaswing.customizedcomponent.FlatButton;
+import hibernateproject.uijavaswing.customizedcomponent.FlatPasswordInput;
+import hibernateproject.uijavaswing.customizedcomponent.FlatTextInput;
+import hibernateproject.uijavaswing.customizedcomponent.RoundedJFrame;
 import java.awt.Color;
 import javax.swing.JFrame;
 
@@ -12,12 +17,12 @@ import javax.swing.JFrame;
  *
  * @author tuand
  */
-public class Home extends RoundedJFrame {
+public class Login extends RoundedJFrame {
 
     /**
      * Creates new form Home
      */
-    public Home() {
+    public Login() {
         initComponents();
     }
 
@@ -38,13 +43,14 @@ public class Home extends RoundedJFrame {
         usernameLabel = new javax.swing.JLabel();
         passwordLabel = new javax.swing.JLabel();
         loginButton = new FlatButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         closeButton = new javax.swing.JLabel();
         minimizeButton = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1280, 768));
-        setResizable(false);
 
         background.setBackground(new java.awt.Color(30, 34, 82));
 
@@ -77,6 +83,16 @@ public class Home extends RoundedJFrame {
         //loginButton.setFocusPainted(false);
         //loginButton.setContentAreaFilled(false);
 
+        jLabel1.setFont(new java.awt.Font("Roboto", 2, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(204, 0, 0));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Lỗi đăng nhập #???");
+
+        jLabel2.setFont(new java.awt.Font("Roboto", 2, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Quên mật khẩu?");
+
         javax.swing.GroupLayout loginFormLayout = new javax.swing.GroupLayout(loginForm);
         loginForm.setLayout(loginFormLayout);
         loginFormLayout.setHorizontalGroup(
@@ -85,17 +101,19 @@ public class Home extends RoundedJFrame {
                 .addGap(30, 30, 30)
                 .addGroup(loginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(loginFormLayout.createSequentialGroup()
-                        .addComponent(usernameLabel)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(loginFormLayout.createSequentialGroup()
                         .addComponent(passwordLabel)
                         .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(loginFormLayout.createSequentialGroup()
+                        .addComponent(usernameLabel)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginFormLayout.createSequentialGroup()
                         .addGroup(loginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(loginButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(loginFormTitle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
                             .addComponent(username, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(password))
+                            .addComponent(password)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(30, 30, 30))))
         );
         loginFormLayout.setVerticalGroup(
@@ -111,9 +129,13 @@ public class Home extends RoundedJFrame {
                 .addComponent(passwordLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
                 .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addGap(36, 36, 36)
+                .addComponent(jLabel2)
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         closeButton.setFont(new java.awt.Font("Tahoma", 1, 28)); // NOI18N
@@ -169,9 +191,9 @@ public class Home extends RoundedJFrame {
         backgroundLayout.setHorizontalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(backgroundLayout.createSequentialGroup()
-                .addGap(333, 333, 333)
+                .addGap(324, 324, 324)
                 .addComponent(loginForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(333, 335, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -216,6 +238,7 @@ public class Home extends RoundedJFrame {
     private void minimize(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimize
         // TODO add your handling code here:
         this.setExtendedState(JFrame.ICONIFIED);
+//        this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH );
     }//GEN-LAST:event_minimize
 
     private void moveFrame(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_moveFrame
@@ -256,20 +279,21 @@ public class Home extends RoundedJFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Home().setVisible(true);
+                new Login().setVisible(true);
             }
         });
     }
@@ -277,6 +301,8 @@ public class Home extends RoundedJFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
     private javax.swing.JLabel closeButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton loginButton;
     private javax.swing.JPanel loginForm;

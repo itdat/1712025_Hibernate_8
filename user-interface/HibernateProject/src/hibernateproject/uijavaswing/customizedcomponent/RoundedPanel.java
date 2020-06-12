@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hibernateproject.uijavaswing;
+package hibernateproject.uijavaswing.customizedcomponent;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,7 +17,7 @@ import javax.swing.JPanel;
  *
  * @author tuand
  */
-class RoundedPanel extends JPanel
+public class RoundedPanel extends JPanel
     {
         private Color backgroundColor;
         private int cornerRadius = 15;
