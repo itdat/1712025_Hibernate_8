@@ -45,9 +45,12 @@ public class Login extends RoundedJFrame {
         loginButton = new FlatButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        closeButton = new javax.swing.JLabel();
-        minimizeButton = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        titleBar = new javax.swing.JPanel();
+        btnClose = new RoundedPanel(10);
+        txtClose = new javax.swing.JLabel();
+        btnMinimize = new RoundedPanel(10);
+        txtMinimize = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1280, 768));
@@ -138,10 +141,20 @@ public class Login extends RoundedJFrame {
                 .addContainerGap(45, Short.MAX_VALUE))
         );
 
-        closeButton.setFont(new java.awt.Font("Tahoma", 1, 28)); // NOI18N
-        closeButton.setForeground(new java.awt.Color(255, 255, 255));
-        closeButton.setText("×");
-        closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        titleBar.setBackground(new java.awt.Color(58, 66, 129));
+        titleBar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                moveFrame(evt);
+            }
+        });
+        titleBar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                getPosition(evt);
+            }
+        });
+
+        btnClose.setBackground(new java.awt.Color(77, 89, 159));
+        btnClose.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 close(evt);
             }
@@ -153,37 +166,91 @@ public class Login extends RoundedJFrame {
             }
         });
 
-        minimizeButton.setFont(new java.awt.Font("Tahoma", 1, 28)); // NOI18N
-        minimizeButton.setForeground(new java.awt.Color(255, 255, 255));
-        minimizeButton.setText("-");
-        minimizeButton.setToolTipText("");
-        minimizeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        txtClose.setFont(new java.awt.Font("Roboto", 1, 28)); // NOI18N
+        txtClose.setForeground(new java.awt.Color(255, 255, 255));
+        txtClose.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtClose.setText("×");
+        txtClose.setAlignmentY(0.0F);
+
+        javax.swing.GroupLayout btnCloseLayout = new javax.swing.GroupLayout(btnClose);
+        btnClose.setLayout(btnCloseLayout);
+        btnCloseLayout.setHorizontalGroup(
+            btnCloseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnCloseLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(txtClose, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
+        );
+        btnCloseLayout.setVerticalGroup(
+            btnCloseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnCloseLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(txtClose, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
+        );
+
+        btnMinimize.setBackground(new java.awt.Color(77, 89, 159));
+        btnMinimize.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 minimize(evt);
             }
-        });
-
-        jPanel1.setBackground(new java.awt.Color(30, 34, 82));
-        jPanel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                moveFrame(evt);
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                mouseEnterHandle(evt);
             }
-        });
-        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                getPosition(evt);
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                mouseExitHandle(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        txtMinimize.setFont(new java.awt.Font("Roboto", 1, 28)); // NOI18N
+        txtMinimize.setForeground(new java.awt.Color(255, 255, 255));
+        txtMinimize.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtMinimize.setText("-");
+        txtMinimize.setAlignmentY(0.0F);
+
+        javax.swing.GroupLayout btnMinimizeLayout = new javax.swing.GroupLayout(btnMinimize);
+        btnMinimize.setLayout(btnMinimizeLayout);
+        btnMinimizeLayout.setHorizontalGroup(
+            btnMinimizeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnMinimizeLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(txtMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 37, Short.MAX_VALUE)
+        btnMinimizeLayout.setVerticalGroup(
+            btnMinimizeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnMinimizeLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(txtMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
+        );
+
+        jLabel3.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Hibernate Project v1.0");
+
+        javax.swing.GroupLayout titleBarLayout = new javax.swing.GroupLayout(titleBar);
+        titleBar.setLayout(titleBarLayout);
+        titleBarLayout.setHorizontalGroup(
+            titleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, titleBarLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
+        );
+        titleBarLayout.setVerticalGroup(
+            titleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(titleBarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(titleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
@@ -194,22 +261,12 @@ public class Login extends RoundedJFrame {
                 .addGap(324, 324, 324)
                 .addComponent(loginForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(333, 335, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(minimizeButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(closeButton)
-                .addGap(21, 21, 21))
+            .addComponent(titleBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(backgroundLayout.createSequentialGroup()
-                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(closeButton)
-                        .addComponent(minimizeButton))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(titleBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(109, 109, 109)
                 .addComponent(loginForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(128, 128, 128))
@@ -235,12 +292,6 @@ public class Login extends RoundedJFrame {
         dispose();
     }//GEN-LAST:event_close
 
-    private void minimize(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimize
-        // TODO add your handling code here:
-        this.setExtendedState(JFrame.ICONIFIED);
-//        this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH );
-    }//GEN-LAST:event_minimize
-
     private void moveFrame(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_moveFrame
         // TODO add your handling code here:
         setLocation(getLocation().x + evt.getX() - this.pX, getLocation().y + evt.getY() - this.pY);
@@ -254,13 +305,28 @@ public class Login extends RoundedJFrame {
 
     private void mouseEnterHandle(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseEnterHandle
         // TODO add your handling code here:
-        this.closeButton.setForeground(Color.red);
+        if (evt.getSource() == this.btnClose) {
+            this.txtClose.setForeground(Color.red);
+        };
+        if (evt.getSource() == this.btnMinimize) {
+            this.txtMinimize.setForeground(Color.red);
+        };
     }//GEN-LAST:event_mouseEnterHandle
 
     private void mouseExitHandle(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseExitHandle
         // TODO add your handling code here:
-        this.closeButton.setForeground(Color.white);
+        if (evt.getSource() == this.btnClose) {
+            this.txtClose.setForeground(Color.white);
+        };
+        if (evt.getSource() == this.btnMinimize) {
+            this.txtMinimize.setForeground(Color.white);
+        };
     }//GEN-LAST:event_mouseExitHandle
+
+    private void minimize(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimize
+        // TODO add your handling code here:
+        this.setExtendedState(JFrame.ICONIFIED);
+    }//GEN-LAST:event_minimize
 
     /**
      * @param args the command line arguments
@@ -300,16 +366,19 @@ public class Login extends RoundedJFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
-    private javax.swing.JLabel closeButton;
+    private javax.swing.JPanel btnClose;
+    private javax.swing.JPanel btnMinimize;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JButton loginButton;
     private javax.swing.JPanel loginForm;
     private javax.swing.JLabel loginFormTitle;
-    private javax.swing.JLabel minimizeButton;
     private javax.swing.JTextField password;
     private javax.swing.JLabel passwordLabel;
+    private javax.swing.JPanel titleBar;
+    private javax.swing.JLabel txtClose;
+    private javax.swing.JLabel txtMinimize;
     private javax.swing.JTextField username;
     private javax.swing.JLabel usernameLabel;
     // End of variables declaration//GEN-END:variables
