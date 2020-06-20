@@ -65,7 +65,6 @@ public class ReExamination extends RoundedJFrame {
         btnClassroom5 = new FlatButton(new Color(36,55,114), new Color(36,55,114), new Color(88,102,146));
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        edtSearch = new FlatTextInput();
         btnSearch = new FlatButton(new Color(58,66,129), new Color(30,34,82), new Color(36,55,114));
         btnImportCSV = new FlatButton(new Color(58,66,129), new Color(30,34,82), new Color(36,55,114));
         btnConfirm = new FlatButton(new Color(58,66,129), new Color(30,34,82), new Color(36,55,114));
@@ -91,6 +90,7 @@ public class ReExamination extends RoundedJFrame {
         jLabel12 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea2 = new FlatTextArea();
+        edtSearch9 = new FlatTextInput();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1280, 768));
@@ -369,9 +369,6 @@ public class ReExamination extends RoundedJFrame {
             jTable2.getColumnModel().getColumn(6).setPreferredWidth(128);
         }
 
-        edtSearch.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        edtSearch.setToolTipText("");
-
         btnSearch.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         btnSearch.setText("Tìm kiếm");
 
@@ -522,6 +519,9 @@ public class ReExamination extends RoundedJFrame {
             .addContainerGap())
     );
 
+    edtSearch9.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+    edtSearch9.setToolTipText("");
+
     javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
     background.setLayout(backgroundLayout);
     backgroundLayout.setHorizontalGroup(
@@ -534,15 +534,15 @@ public class ReExamination extends RoundedJFrame {
                     .addGap(18, 18, 18)
                     .addComponent(jLabel2)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(edtSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(edtSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jLabel4)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(edtSearch2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(edtSearch2, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(btnImportCSV)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(edtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(63, 63, 63)
+                    .addComponent(edtSearch9)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(btnSearch)
                     .addGap(21, 21, 21))
@@ -568,13 +568,13 @@ public class ReExamination extends RoundedJFrame {
                 .addGroup(backgroundLayout.createSequentialGroup()
                     .addGap(9, 9, 9)
                     .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(edtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnImportCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2)
                         .addComponent(edtSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel4)
-                        .addComponent(edtSearch2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(edtSearch2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(edtSearch9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(12, 12, 12)
                     .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jScrollPane1)
@@ -722,7 +722,6 @@ public class ReExamination extends RoundedJFrame {
     private javax.swing.JButton btnImportCSV;
     private javax.swing.JPanel btnMinimize;
     private javax.swing.JButton btnSearch;
-    private javax.swing.JTextField edtSearch;
     private javax.swing.JTextField edtSearch1;
     private javax.swing.JTextField edtSearch2;
     private javax.swing.JTextField edtSearch3;
@@ -731,6 +730,7 @@ public class ReExamination extends RoundedJFrame {
     private javax.swing.JTextField edtSearch6;
     private javax.swing.JTextField edtSearch7;
     private javax.swing.JTextField edtSearch8;
+    private javax.swing.JTextField edtSearch9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

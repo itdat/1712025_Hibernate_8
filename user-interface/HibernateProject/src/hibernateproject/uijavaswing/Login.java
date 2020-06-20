@@ -36,14 +36,14 @@ public class Login extends RoundedJFrame {
     private void initComponents() {
 
         background = new javax.swing.JPanel();
-        loginForm = new RoundedPanel(20);
-        loginFormTitle = new javax.swing.JLabel();
-        username = new FlatTextInput();
-        password = new FlatPasswordInput();
-        usernameLabel = new javax.swing.JLabel();
-        passwordLabel = new javax.swing.JLabel();
-        loginButton = new FlatButton();
-        jLabel1 = new javax.swing.JLabel();
+        formLogin = new RoundedPanel(20);
+        txtLogin = new javax.swing.JLabel();
+        edtUsername = new FlatTextInput();
+        edtPassword = new FlatPasswordInput();
+        txtUsername = new javax.swing.JLabel();
+        txtPassword = new javax.swing.JLabel();
+        btnLogin = new FlatButton();
+        txtError = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         titleBar = new javax.swing.JPanel();
         btnClose = new RoundedPanel(10);
@@ -57,85 +57,90 @@ public class Login extends RoundedJFrame {
 
         background.setBackground(new java.awt.Color(30, 34, 82));
 
-        loginForm.setBackground(new java.awt.Color(255, 255, 255));
+        formLogin.setBackground(new java.awt.Color(255, 255, 255));
 
-        loginFormTitle.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
-        loginFormTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        loginFormTitle.setText("Đăng nhập");
+        txtLogin.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
+        txtLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtLogin.setText("Đăng nhập");
 
-        username.setBackground(new java.awt.Color(240, 240, 240));
-        username.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        username.setText("admin");
+        edtUsername.setBackground(new java.awt.Color(240, 240, 240));
+        edtUsername.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
 
-        password.setBackground(new java.awt.Color(240, 240, 240));
-        password.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        password.setToolTipText("");
+        edtPassword.setBackground(new java.awt.Color(240, 240, 240));
+        edtPassword.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        edtPassword.setToolTipText("");
 
-        usernameLabel.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        usernameLabel.setText("Tài khoản");
+        txtUsername.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        txtUsername.setText("Tài khoản");
 
-        passwordLabel.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        passwordLabel.setText("Mật khẩu");
+        txtPassword.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        txtPassword.setText("Mật khẩu");
 
-        loginButton.setBackground(new java.awt.Color(0, 102, 153));
-        loginButton.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        loginButton.setForeground(new java.awt.Color(255, 255, 255));
-        loginButton.setText("Đăng nhập");
-        loginButton.setBorder(null);
+        btnLogin.setBackground(new java.awt.Color(0, 102, 153));
+        btnLogin.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        btnLogin.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogin.setText("Đăng nhập");
+        btnLogin.setBorder(null);
         //loginButton.setBorderPainted(false);
         //loginButton.setFocusPainted(false);
         //loginButton.setContentAreaFilled(false);
+        btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                executeLogin(evt);
+            }
+        });
 
-        jLabel1.setFont(new java.awt.Font("Roboto", 2, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Lỗi đăng nhập #???");
+        txtError.setVisible(false);
+        txtError.setFont(new java.awt.Font("Roboto", 2, 18)); // NOI18N
+        txtError.setForeground(new java.awt.Color(204, 0, 0));
+        txtError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtError.setText("Lỗi đăng nhập #???");
 
         jLabel2.setFont(new java.awt.Font("Roboto", 2, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(102, 102, 102));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Quên mật khẩu?");
 
-        javax.swing.GroupLayout loginFormLayout = new javax.swing.GroupLayout(loginForm);
-        loginForm.setLayout(loginFormLayout);
-        loginFormLayout.setHorizontalGroup(
-            loginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(loginFormLayout.createSequentialGroup()
+        javax.swing.GroupLayout formLoginLayout = new javax.swing.GroupLayout(formLogin);
+        formLogin.setLayout(formLoginLayout);
+        formLoginLayout.setHorizontalGroup(
+            formLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(formLoginLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(loginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(loginFormLayout.createSequentialGroup()
-                        .addComponent(passwordLabel)
+                .addGroup(formLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(formLoginLayout.createSequentialGroup()
+                        .addComponent(txtPassword)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(loginFormLayout.createSequentialGroup()
-                        .addComponent(usernameLabel)
+                    .addGroup(formLoginLayout.createSequentialGroup()
+                        .addComponent(txtUsername)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginFormLayout.createSequentialGroup()
-                        .addGroup(loginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(loginButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(loginFormTitle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
-                            .addComponent(username, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(password)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, formLoginLayout.createSequentialGroup()
+                        .addGroup(formLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
+                            .addComponent(edtUsername, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(edtPassword)
+                            .addComponent(txtError, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(30, 30, 30))))
         );
-        loginFormLayout.setVerticalGroup(
-            loginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(loginFormLayout.createSequentialGroup()
+        formLoginLayout.setVerticalGroup(
+            formLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(formLoginLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(loginFormTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(usernameLabel)
+                .addComponent(txtUsername)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(edtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17)
-                .addComponent(passwordLabel)
+                .addComponent(txtPassword)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(edtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
+                .addComponent(txtError)
                 .addGap(18, 18, 18)
-                .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(jLabel2)
                 .addContainerGap(45, Short.MAX_VALUE))
@@ -259,7 +264,7 @@ public class Login extends RoundedJFrame {
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(backgroundLayout.createSequentialGroup()
                 .addGap(324, 324, 324)
-                .addComponent(loginForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(formLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(333, 335, Short.MAX_VALUE))
             .addComponent(titleBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -268,7 +273,7 @@ public class Login extends RoundedJFrame {
             .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(titleBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(109, 109, 109)
-                .addComponent(loginForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(formLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(128, 128, 128))
         );
 
@@ -328,6 +333,14 @@ public class Login extends RoundedJFrame {
         this.setExtendedState(JFrame.ICONIFIED);
     }//GEN-LAST:event_minimize
 
+    private void executeLogin(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_executeLogin
+        // username -> query db -> password -> compare
+        System.out.println("Executing login...");
+        System.out.println(this.edtUsername.getText());
+        System.out.println(this.edtPassword.getText());
+      
+    }//GEN-LAST:event_executeLogin
+
     /**
      * @param args the command line arguments
      */
@@ -355,7 +368,7 @@ public class Login extends RoundedJFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
+        System.out.println("Start login");
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -367,20 +380,20 @@ public class Login extends RoundedJFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
     private javax.swing.JPanel btnClose;
+    private javax.swing.JButton btnLogin;
     private javax.swing.JPanel btnMinimize;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField edtPassword;
+    private javax.swing.JTextField edtUsername;
+    private javax.swing.JPanel formLogin;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JButton loginButton;
-    private javax.swing.JPanel loginForm;
-    private javax.swing.JLabel loginFormTitle;
-    private javax.swing.JTextField password;
-    private javax.swing.JLabel passwordLabel;
     private javax.swing.JPanel titleBar;
     private javax.swing.JLabel txtClose;
+    private javax.swing.JLabel txtError;
+    private javax.swing.JLabel txtLogin;
     private javax.swing.JLabel txtMinimize;
-    private javax.swing.JTextField username;
-    private javax.swing.JLabel usernameLabel;
+    private javax.swing.JLabel txtPassword;
+    private javax.swing.JLabel txtUsername;
     // End of variables declaration//GEN-END:variables
     private int pX;
     private int pY;

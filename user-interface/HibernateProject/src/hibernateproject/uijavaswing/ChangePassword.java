@@ -276,6 +276,11 @@ public class ChangePassword extends RoundedJFrame {
         //loginButton.setBorderPainted(false);
         //loginButton.setFocusPainted(false);
         //loginButton.setContentAreaFilled(false);
+        loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                executeLogin(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Roboto", 2, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(204, 0, 0));
@@ -431,6 +436,10 @@ public class ChangePassword extends RoundedJFrame {
         // TODO add your handling code here:
         this.setExtendedState(JFrame.ICONIFIED);
     }//GEN-LAST:event_minimize
+
+    private void executeLogin(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_executeLogin
+        // TODO add your handling code here:
+    }//GEN-LAST:event_executeLogin
 
     /**
      * @param args the command line arguments
