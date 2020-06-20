@@ -32,7 +32,7 @@ public class FlatTextInput extends JTextField {
     protected Color Ae_colorBorder = Color.decode("#ADADAD");  
     private String Ae_placeholder = "Type password here";  
     private Color Ae_txtColorPlaceholder = Color.decode("#808080");  
-    private final Integer Ae_borderRadius = 8;  
+    private final Integer Ae_borderRadius = 10;  
     private final Color txtcolor = Color.decode("#000000");  
     private final Color bgcolor = Color.decode("#FFFFFF");  
   
@@ -84,17 +84,13 @@ public class FlatTextInput extends JTextField {
     }  
   
     @Override  
-    protected void paintBorder(Graphics g) {  
-        int x = 1;  
-        int y = 1;  
-        int w = getWidth() - 2;  
-        int h = getHeight() - 2;  
+    protected void paintBorder(Graphics g) {   
         Graphics2D g2 = (Graphics2D) g.create();  
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);  
   
         g2.setStroke(new BasicStroke(this.Ae_sizeBorder));  
         g2.setColor(this.Ae_colorBorder);  
-        g2.drawRoundRect(x, y, w, h, this.Ae_borderRadius, this.Ae_borderRadius);  
+        g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, this.Ae_borderRadius, this.Ae_borderRadius);  
         g2.dispose();  
     }  
   

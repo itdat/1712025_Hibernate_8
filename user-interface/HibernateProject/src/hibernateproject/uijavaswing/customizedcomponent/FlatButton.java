@@ -84,6 +84,44 @@ public class FlatButton extends JButton {
             }  
         });  
     }  
+    
+    public FlatButton(Color mouseHover, Color mousePress, Color warnaBackground ) {  
+        this.MouseHover = mouseHover;
+        this.MousePress = mousePress;
+        this.WarnaBackground = warnaBackground;
+        setOpaque(false);  
+        setBorderPainted(false);  
+        setFocusPainted(false);  
+        setContentAreaFilled(false);  
+        setForeground(Color.white);  
+        setFont(getFont().deriveFont(Font.PLAIN));  
+        addMouseListener(new MouseAdapter() {  
+  
+            @Override  
+            public void mouseEntered(MouseEvent e) {  
+                super.mouseEntered(e);  
+                setEnter(true);  
+            }  
+  
+            @Override  
+            public void mouseExited(MouseEvent e) {  
+                super.mouseExited(e);  
+                setEnter(false);  
+            }  
+  
+            @Override  
+            public void mousePressed(MouseEvent e) {  
+                super.mousePressed(e);  
+                setPress(true);  
+            }  
+  
+            @Override  
+            public void mouseReleased(MouseEvent e) {  
+                super.mouseReleased(e);  
+                setPress(false);  
+            }  
+        });  
+    }  
   
     @Override  
     protected void paintComponent(Graphics g) {  
