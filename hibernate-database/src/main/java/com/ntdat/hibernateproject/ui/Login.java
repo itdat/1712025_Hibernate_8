@@ -5,6 +5,8 @@
  */
 package com.ntdat.hibernateproject.ui;
 
+import com.ntdat.hibernateproject.dao.MinistryDAO;
+import com.ntdat.hibernateproject.entities.GiaoVuEntity;
 import com.ntdat.hibernateproject.ui.customcomponent.*;
 import com.ntdat.hibernateproject.ui.fragment.ClassroomPanel;
 
@@ -333,14 +335,18 @@ public class Login extends RoundedJFrame {
         String username = this.edtUsername.getText();
         String password = this.edtPassword.getText();
         // login simulation
-        if (username.equals("admin") && password.equals("admin")) {
-            MainFrame mainFrame = new MainFrame();
-            mainFrame.initComponents(new ClassroomPanel());
-            mainFrame.setVisible(true);
-            this.dispose();
-        } else {
-            txtError.setText("Lỗi: sai tài khoản hoặc mật khẩu");
-            txtError.setVisible(true);
+        if (username.equals("giaovu")) {
+            GiaoVuEntity gv = MinistryDAO.getMinistry();
+            System.out.println(gv.getMatKhau());
+            if (password.equals(gv.getMatKhau())) {
+                MainFrame mainFrame = new MainFrame();
+                mainFrame.initComponents(new ClassroomPanel());
+                mainFrame.setVisible(true);
+                this.dispose();
+            } else {
+                txtError.setText("Lỗi: sai tài khoản hoặc mật khẩu");
+                txtError.setVisible(true);
+            }
         }
 
       

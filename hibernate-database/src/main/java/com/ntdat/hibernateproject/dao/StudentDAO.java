@@ -39,10 +39,26 @@ public class StudentDAO {
         return sinhVienEntityList;
     }
 
-    public static List<SinhVienEntity> getStudents(String classroomID) {
+    public static List<SinhVienEntity> getStudents(String compoundClassID) {
+        String classID = "", subjectID = "";
+        if (compoundClassID.contains("-")) {
+            String[] token = compoundClassID.split("-");
+            classID = token[0];
+            subjectID = token[1];
+            if (classID.equals("")) return null;
+        } else {
+            classID = compoundClassID;
+        }
+
         Session session = HibernateUtilities.getSessionFactory().openSession();
         List<SinhVienEntity> sinhVienEntityList = null;
-        String hql = "SELECT new SinhVienEntity(sv.mssv,sv.hoVaTen,sv.gioiTinh, sv.cmnd, sv.maLop) FROM SinhVienEntity sv WHERE sv.maLop = '"+ classroomID + "'";
+        String hql = "SELECT new SinhVienEntity(sv.mssv,sv.hoVaTen,sv.gioiTinh, sv.cmnd, sv.maLop) FROM SinhVienEntity sv WHERE sv.maLop = '"+ classID + "'";
+
+        System.out.println(classID + " " + subjectID);
+
+        if (!subjectID.equals("")) {
+            hql = "SELECT new SinhVienEntity(sv.mssv,sv.hoVaTen,sv.gioiTinh, sv.cmnd, sv.maLop) FROM SinhVienEntity sv, ChiTietMonHocEntity ctmh WHERE sv.mssv = ctmh.mssv AND sv.maLop = '"+ classID + "' AND ctmh.maMon ='"+ subjectID +"'";
+        }
         try {
             Query query = session.createQuery(hql);
             sinhVienEntityList = query.list();

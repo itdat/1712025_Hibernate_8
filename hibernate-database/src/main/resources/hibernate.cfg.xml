@@ -17,6 +17,7 @@
         <mapping class="com.ntdat.hibernateproject.entities.PhucKhaoEntity"/>
         <mapping class="com.ntdat.hibernateproject.entities.SinhVienEntity"/>
         <mapping class="com.ntdat.hibernateproject.entities.TaiKhoanEntity"/>
+        <mapping class="com.ntdat.hibernateproject.entities.GiaoVuEntity"/>
         <!-- DB schema will be updated if needed -->
 
     </session-factory>
