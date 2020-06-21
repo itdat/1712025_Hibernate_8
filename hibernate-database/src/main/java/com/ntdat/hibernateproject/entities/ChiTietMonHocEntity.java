@@ -10,7 +10,6 @@ public class ChiTietMonHocEntity {
     private String maLop;
     private String maMon;
     private String mssv;
-    private String tenMonHoc;
     private Double diemGk;
     private Double diemCk;
     private Double diemKhac;
@@ -18,11 +17,10 @@ public class ChiTietMonHocEntity {
 
     public ChiTietMonHocEntity() {}
 
-    public ChiTietMonHocEntity(String maLop, String maMon, String mssv, String tenMonHoc, Double diemGk, Double diemCk, Double diemKhac, Double diemTong) {
+    public ChiTietMonHocEntity(String maLop, String maMon, String mssv, Double diemGk, Double diemCk, Double diemKhac, Double diemTong) {
         this.maLop = maLop;
         this.maMon = maMon;
         this.mssv = mssv;
-        this.tenMonHoc = tenMonHoc;
         this.diemGk = diemGk;
         this.diemCk = diemCk;
         this.diemKhac = diemKhac;
@@ -57,16 +55,6 @@ public class ChiTietMonHocEntity {
 
     public void setMssv(String mssv) {
         this.mssv = mssv;
-    }
-
-    @Basic
-    @Column(name = "TenMonHoc")
-    public String getTenMonHoc() {
-        return tenMonHoc;
-    }
-
-    public void setTenMonHoc(String tenMonHoc) {
-        this.tenMonHoc = tenMonHoc;
     }
 
     @Basic
@@ -117,7 +105,6 @@ public class ChiTietMonHocEntity {
         return Objects.equals(maLop, that.maLop) &&
                 Objects.equals(maMon, that.maMon) &&
                 Objects.equals(mssv, that.mssv) &&
-                Objects.equals(tenMonHoc, that.tenMonHoc) &&
                 Objects.equals(diemGk, that.diemGk) &&
                 Objects.equals(diemCk, that.diemCk) &&
                 Objects.equals(diemKhac, that.diemKhac) &&
@@ -126,6 +113,6 @@ public class ChiTietMonHocEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(maLop, maMon, mssv, tenMonHoc, diemGk, diemCk, diemKhac, diemTong);
+        return Objects.hash(maLop, maMon, mssv, diemGk, diemCk, diemKhac, diemTong);
     }
 }

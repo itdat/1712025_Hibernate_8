@@ -52,7 +52,7 @@ public class SubjectDetailDAO {
 
         Session session = HibernateUtilities.getSessionFactory().openSession();
         List<ChiTietMonHocEntity> chiTietMonHocEntityList = null;
-        String hql = "SELECT new ChiTietMonHocEntity(ctmh.maLop, ctmh.maMon, ctmh.mssv, ctmh.tenMonHoc, ctmh.diemGk, ctmh.diemCk, ctmh.diemKhac, ctmh.diemTong) FROM ChiTietMonHocEntity ctmh WHERE ctmh.maLop = '" + classID +"' AND ctmh.maMon = '" + subjectID + "'";
+        String hql = "SELECT new ChiTietMonHocEntity(ctmh.maLop, ctmh.maMon, ctmh.mssv, ctmh.diemGk, ctmh.diemCk, ctmh.diemKhac, ctmh.diemTong) FROM ChiTietMonHocEntity ctmh WHERE ctmh.maLop = '" + classID +"' AND ctmh.maMon = '" + subjectID + "'";
         try {
             Query query = session.createQuery(hql);
             chiTietMonHocEntityList = query.list();
