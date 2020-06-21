@@ -35,6 +35,14 @@
             <version>8.0.20</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>javax.persistence</artifactId>
+            <version>2.2.0-release</version>
+        </dependency>
+        <!-- Thanks for using https://jar-download.com -->
+
+
     </dependencies>
 
 

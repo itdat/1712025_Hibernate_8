@@ -1,11 +1,24 @@
 package com.ntdat.hibernateproject.ui.fragment;
 
+import com.ntdat.hibernateproject.dao.ReExaminationDAO;
+import com.ntdat.hibernateproject.dao.StudentDAO;
+import com.ntdat.hibernateproject.dao.SubjectDAO;
+import com.ntdat.hibernateproject.entities.MonHocEntity;
+import com.ntdat.hibernateproject.entities.PhucKhaoEntity;
+import com.ntdat.hibernateproject.entities.SinhVienEntity;
 import com.ntdat.hibernateproject.ui.customcomponent.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Vector;
 
 public class ReExaminationPanel extends JPanel {
     private JScrollPane scrpnlTable;
@@ -36,6 +49,10 @@ public class ReExaminationPanel extends JPanel {
     private JScrollPane scrpnlTextArea;
     private FlatTextArea txaReason;
     private FlatTextInput edtSearch;
+
+    private List<PhucKhaoEntity> reexaminationList = new ArrayList<>();
+    private Vector<String> tableHeader = new Vector<String>(Arrays.asList("STT", "MSSV", "Họ và tên", "Môn phúc khảo", "Tình trạng"));
+
 
     public ReExaminationPanel() {
         initComponents();
@@ -80,73 +97,29 @@ public class ReExaminationPanel extends JPanel {
         scrpnlTable.getVerticalScrollBar().setUI(new MyScrollbarUI());
         tblRequests.getTableHeader().setDefaultRenderer(new HeaderRenderer());
         tblRequests.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        tblRequests.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-                        {"1", "1712025", "Nguyễn Tuấn Đạt", "9.0", "9.0", "2.0", "9.5"},
-                        {"2", "1712000", "Nguyễn Văn B", "8.5", "8.5", "0.0", "8.5"},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null}
-                },
-                new String [] {
-                        "STT", "MSSV", "Họ và tên", "Điểm GK", "Điểm CK", "Điểm khác", "Điểm tổng"
-                }
-        ));
+
+        final List<PhucKhaoEntity> phucKhaoEntityList = ReExaminationDAO.getReExaminations();
+        Vector table = new Vector();
+        for (int i = 0; i < phucKhaoEntityList.size(); i++) {
+            Vector record = new Vector();
+            record.add(String.valueOf(i+1));
+            record.add(phucKhaoEntityList.get(i).getMssv());
+            SinhVienEntity s = StudentDAO.getStudent(phucKhaoEntityList.get(i).getMssv());
+            record.add(s.getHoVaTen());
+            MonHocEntity m = SubjectDAO.getSubject(phucKhaoEntityList.get(i).getMaMon());
+            record.add(m.getTenMon());
+            record.add(phucKhaoEntityList.get(i).getTinhTrang());
+            table.add(record);
+        }
+
+        tblRequests.setModel(new javax.swing.table.DefaultTableModel(table, tableHeader));
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-        //tblRequests.setDefaultRenderer(String.class, centerRenderer);
         tblRequests.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         tblRequests.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
         tblRequests.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
         tblRequests.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
         tblRequests.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-        tblRequests.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
-        tblRequests.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
         tblRequests.setDragEnabled(true);
         tblRequests.setFocusable(false);
         tblRequests.setRowHeight(40);
@@ -156,13 +129,31 @@ public class ReExaminationPanel extends JPanel {
         scrpnlTable.setViewportView(tblRequests);
         if (tblRequests.getColumnModel().getColumnCount() > 0) {
             tblRequests.getColumnModel().getColumn(0).setPreferredWidth(85);
-            tblRequests.getColumnModel().getColumn(1).setPreferredWidth(170);
-            tblRequests.getColumnModel().getColumn(2).setPreferredWidth(290);
-            tblRequests.getColumnModel().getColumn(3).setPreferredWidth(128);
-            tblRequests.getColumnModel().getColumn(4).setPreferredWidth(128);
-            tblRequests.getColumnModel().getColumn(5).setPreferredWidth(128);
-            tblRequests.getColumnModel().getColumn(6).setPreferredWidth(128);
+            tblRequests.getColumnModel().getColumn(1).setPreferredWidth(130);
+            tblRequests.getColumnModel().getColumn(2).setPreferredWidth(200);
+            tblRequests.getColumnModel().getColumn(3).setPreferredWidth(210);
+            tblRequests.getColumnModel().getColumn(4).setPreferredWidth(180);
         }
+
+        tblRequests.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+            public void valueChanged(ListSelectionEvent event) {
+                PhucKhaoEntity pk = phucKhaoEntityList.get(Integer.valueOf(tblRequests.getValueAt(tblRequests.getSelectedRow(), 0).toString()) -1);
+                edtStudentId.setText(tblRequests.getValueAt(tblRequests.getSelectedRow(), 1).toString());
+                edtFullName.setText(tblRequests.getValueAt(tblRequests.getSelectedRow(), 2).toString());
+                edtSubject.setText(tblRequests.getValueAt(tblRequests.getSelectedRow(), 3).toString());
+                edtColumn.setText(pk.getCotDiem());
+                edtWishScore.setText(Float.toString((float) pk.getDiemMongMuon()));
+                txaReason.setText(pk.getLiDo());
+                edtStudentId.setEnabled(false);
+                edtFullName.setEnabled(false);
+                edtSubject.setEnabled(false);
+                edtColumn.setEnabled(false);
+                edtWishScore.setEnabled(false);
+                txaReason.setEnabled(false);
+            }
+        });
+
+
 
         btnSearch.setFont(new Font("Roboto", 0, 18)); // NOI18N
         btnSearch.setText("Tìm kiếm");

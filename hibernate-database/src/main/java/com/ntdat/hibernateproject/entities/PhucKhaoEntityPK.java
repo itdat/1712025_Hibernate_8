@@ -10,6 +10,14 @@ public class PhucKhaoEntityPK implements Serializable {
     private String maMon;
     private String cotDiem;
 
+    public PhucKhaoEntityPK() {}
+
+    public PhucKhaoEntityPK(String mssv, String maMon, String cotDiem) {
+        this.mssv = mssv;
+        this.maMon = maMon;
+        this.cotDiem = cotDiem;
+    }
+
     @Column(name = "MSSV")
     @Id
     public String getMssv() {

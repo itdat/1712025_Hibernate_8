@@ -12,6 +12,7 @@ public class PhucKhaoEntity {
     private String cotDiem;
     private double diemMongMuon;
     private String liDo;
+    private String tinhTrang;
 
     @Id
     @Column(name = "MSSV")
@@ -63,6 +64,16 @@ public class PhucKhaoEntity {
         this.liDo = liDo;
     }
 
+    @Basic
+    @Column(name = "TinhTrang")
+    public String getTinhTrang() {
+        return tinhTrang;
+    }
+
+    public void setTinhTrang(String tinhTrang) {
+        this.tinhTrang = tinhTrang;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -72,11 +83,12 @@ public class PhucKhaoEntity {
                 Objects.equals(mssv, that.mssv) &&
                 Objects.equals(maMon, that.maMon) &&
                 Objects.equals(cotDiem, that.cotDiem) &&
-                Objects.equals(liDo, that.liDo);
+                Objects.equals(liDo, that.liDo)&&
+                Objects.equals(tinhTrang, that.tinhTrang);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mssv, maMon, cotDiem, diemMongMuon, liDo);
+        return Objects.hash(mssv, maMon, cotDiem, diemMongMuon, liDo, tinhTrang);
     }
 }
