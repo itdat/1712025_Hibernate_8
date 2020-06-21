@@ -30,7 +30,7 @@ public class FlatPasswordInput extends JPasswordField {
     private Boolean left = true;  
     protected float Ae_sizeBorder = 1.0F;
     protected Color Ae_colorBorder = Color.decode("#ADADAD");  
-    private String Ae_placeholder = "Type password here";  
+    private String Ae_placeholder = "Nhập vào đây";
     private Color Ae_txtColorPlaceholder = Color.decode("#808080");  
     private final Integer Ae_borderRadius = 8;  
     private final Color txtcolor = Color.decode("#000000");  

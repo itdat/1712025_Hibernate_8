@@ -1,6 +1,7 @@
 package com.ntdat.hibernateproject.dao;
 
 import com.ntdat.hibernateproject.entities.ChiTietLopHocEntity;
+import com.ntdat.hibernateproject.entities.LopHocEntity;
 import com.ntdat.hibernateproject.entities.MonHocEntity;
 import com.ntdat.hibernateproject.entities.compound.ClassSubject;
 import org.hibernate.HibernateException;
@@ -77,7 +78,7 @@ public class SubjectDAO {
     public static List<ClassSubject> getClassSubjects(String classID) {
         Session session = HibernateUtilities.getSessionFactory().openSession();
         List<ClassSubject> classSubjectList = null;
-        String hql = "SELECT new com.ntdat.hibernateproject.entities.compound.ClassSubject(mh.tenMon, mh.maMon, ctlh.phongHoc, ctlh.maLop) FROM MonHocEntity mh, ChiTietLopHocEntity ctlh WHERE ctlh.maLop = '" + classID + "' AND mh.maMon = ctlh.maMon";
+        String hql = "SELECT new com.ntdat.hibernateproject.entities.compound.ClassSubject(mh.maMon, mh.tenMon, ctlh.phongHoc, ctlh.maLop) FROM MonHocEntity mh, ChiTietLopHocEntity ctlh WHERE ctlh.maLop = '" + classID + "' AND mh.maMon = ctlh.maMon";
         try {
             Query query = session.createQuery(hql);
             classSubjectList = query.list();
@@ -92,6 +93,7 @@ public class SubjectDAO {
     public static boolean addClassSubject(ClassSubject subject) {
         if (getSubject(subject.getId()) != null) return false;
         SubjectDAO.addSubject(new MonHocEntity(subject.getId(), subject.getName()));
+        ClassroomDAO.addClassroom(new LopHocEntity(subject.getClassID()));
         ClassroomDetailDAO.addClassroomDetail(new ChiTietLopHocEntity(subject.getClassID(), subject.getId(), subject.getRoom()));
         return true;
     }

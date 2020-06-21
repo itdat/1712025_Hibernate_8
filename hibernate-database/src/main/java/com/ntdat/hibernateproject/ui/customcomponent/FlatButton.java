@@ -77,7 +77,7 @@ public class FlatButton extends JButton {
             public void mouseReleased(MouseEvent e) {  
                 super.mouseReleased(e);  
                 setPress(false);  
-            }  
+            }
         });  
     }  
     

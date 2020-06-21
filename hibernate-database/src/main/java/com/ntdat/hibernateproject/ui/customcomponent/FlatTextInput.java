@@ -30,21 +30,31 @@ public class FlatTextInput extends JTextField {
     private Boolean left = true;  
     protected float Ae_sizeBorder = 1.0F;
     protected Color Ae_colorBorder = Color.decode("#ADADAD");  
-    private String Ae_placeholder = "Type password here";  
+    private String Ae_placeholder = "Nhập vào đây";
     private Color Ae_txtColorPlaceholder = Color.decode("#808080");  
     private final Integer Ae_borderRadius = 10;
     private final Color txtcolor = Color.decode("#000000");
     private final Color bgcolor = Color.decode("#FFFFFF");
   
-    public FlatTextInput() {  
+    public FlatTextInput() {
         setOpaque(false);  
         setBorder(new EmptyBorder(0, 10, 0, 4));  
         setPreferredSize(new Dimension(188, 30));
         setFont(new Font("Roboto", 0, 18));
         setForeground(txtcolor);
         setBackground(bgcolor);  
-    }  
-  
+    }
+
+    public FlatTextInput(String ae_placeholder) {
+        Ae_placeholder = ae_placeholder;
+        setOpaque(false);
+        setBorder(new EmptyBorder(0, 10, 0, 4));
+        setPreferredSize(new Dimension(188, 30));
+        setFont(new Font("Roboto", 0, 18));
+        setForeground(txtcolor);
+        setBackground(bgcolor);
+    }
+
     @Override  
     protected void paintComponent(Graphics g) {  
         Graphics2D g2 = (Graphics2D) g;  

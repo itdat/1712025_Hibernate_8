@@ -5,10 +5,7 @@
  */
 package com.ntdat.hibernateproject.ui;
 
-import com.ntdat.hibernateproject.ui.customcomponent.RoundedPanel;
-import com.ntdat.hibernateproject.ui.customcomponent.FlatButton;
-import com.ntdat.hibernateproject.ui.customcomponent.FlatPasswordInput;
-import com.ntdat.hibernateproject.ui.customcomponent.RoundedJFrame;
+import com.ntdat.hibernateproject.ui.customcomponent.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -17,7 +14,7 @@ import javax.swing.JLabel;
 
 /**
  *
- * @author ntdat
+ * @author tuand
  */
 public class ChangePassword extends RoundedJFrame {
 
@@ -53,6 +50,7 @@ public class ChangePassword extends RoundedJFrame {
         btnClassroom3 = new FlatButton(new Color(36,55,114), new Color(36,55,114), new Color(88,102,146));
         btnClassroom4 = new FlatButton(new Color(36,55,114), new Color(36,55,114), new Color(88,102,146));
         btnClassroom5 = new FlatButton(new Color(36,55,114), new Color(36,55,114), new Color(88,102,146));
+        mainPanel = new javax.swing.JPanel();
         loginForm = new RoundedPanel(20);
         loginFormTitle = new JLabel();
         password = new FlatPasswordInput();
@@ -246,8 +244,10 @@ public class ChangePassword extends RoundedJFrame {
                 .addComponent(btnClassroom4, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
                 .addComponent(btnClassroom5, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(262, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        mainPanel.setBackground(new Color(88, 102, 146));
 
         loginForm.setBackground(new Color(255, 255, 255));
 
@@ -270,6 +270,11 @@ public class ChangePassword extends RoundedJFrame {
         //loginButton.setBorderPainted(false);
         //loginButton.setFocusPainted(false);
         //loginButton.setContentAreaFilled(false);
+        loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                executeLogin(evt);
+            }
+        });
 
         jLabel2.setFont(new Font("Roboto", 2, 18)); // NOI18N
         jLabel2.setForeground(new Color(204, 0, 0));
@@ -347,6 +352,23 @@ public class ChangePassword extends RoundedJFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGap(245, 245, 245)
+                .addComponent(loginForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(245, 245, 245))
+        );
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGap(75, 75, 75)
+                .addComponent(loginForm, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(80, 80, 80))
+        );
+
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
         backgroundLayout.setHorizontalGroup(
@@ -354,9 +376,9 @@ public class ChangePassword extends RoundedJFrame {
             .addComponent(titleBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(sidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(245, 245, 245)
-                .addComponent(loginForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(245, 245, 245))
+                .addGap(0, 0, 0)
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -364,10 +386,9 @@ public class ChangePassword extends RoundedJFrame {
                 .addComponent(titleBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(sidePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(loginForm, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(75, 75, 75))))
+                    .addGroup(backgroundLayout.createSequentialGroup()
+                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, 0))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -425,6 +446,10 @@ public class ChangePassword extends RoundedJFrame {
         // TODO add your handling code here:
         this.setExtendedState(JFrame.ICONIFIED);
     }//GEN-LAST:event_minimize
+
+    private void executeLogin(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_executeLogin
+        // TODO add your handling code here:
+    }//GEN-LAST:event_executeLogin
 
     /**
      * @param args the command line arguments
@@ -486,6 +511,7 @@ public class ChangePassword extends RoundedJFrame {
     private javax.swing.JButton loginButton;
     private javax.swing.JPanel loginForm;
     private JLabel loginFormTitle;
+    private javax.swing.JPanel mainPanel;
     private javax.swing.JTextField password;
     private javax.swing.JTextField password1;
     private javax.swing.JTextField password2;
