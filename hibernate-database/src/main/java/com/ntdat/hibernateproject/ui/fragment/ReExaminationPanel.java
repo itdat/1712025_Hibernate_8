@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.Vector;
 
 public class ReExaminationPanel extends JPanel {
+    private static ReExaminationPanel instance;
     // DEFINE VALUES
     private static final Font DEFAULT_FONT = new Font("Roboto", 0, 18);
     private static final Color PANEL_BACKGROUND_COLOR = new Color(88, 102, 146);
     private static final Vector<String> TABLE_HEADER = new Vector<String>(Arrays.asList("STT", "MSSV", "Họ và tên", "Môn phúc khảo", "Tình trạng"));
-
 
     private JTable tblRequests;
     private FlatButton btnSearch;
@@ -54,8 +54,15 @@ public class ReExaminationPanel extends JPanel {
     private FlatTextArea txaReason;
     private FlatTextInput edtSearch;
 
-    public ReExaminationPanel() {
+    private ReExaminationPanel() {
         initComponents();
+    }
+
+    public static ReExaminationPanel getInstance() {
+        if (instance == null) {
+            instance = new ReExaminationPanel();
+        }
+        return instance;
     }
 
     private void initComponents() {

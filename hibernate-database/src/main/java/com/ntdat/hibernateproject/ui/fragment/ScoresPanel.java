@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class ScoresPanel extends JPanel {
+    private static ScoresPanel instance;
     // DEFINE VALUES
     private static final Font DEFAULT_FONT = new Font("Roboto", 0, 18);
     private static final Color PANEL_BACKGROUND_COLOR = new Color(88, 102, 146);
@@ -37,8 +38,15 @@ public class ScoresPanel extends JPanel {
     private String classIDMain = "";
     private List<ChiTietMonHocEntity> subjectDetailList = new ArrayList<>();
 
-    public ScoresPanel() {
+    private ScoresPanel() {
         initComponents();
+    }
+
+    public static ScoresPanel getInstance() {
+        if (instance == null) {
+            instance = new ScoresPanel();
+        }
+        return instance;
     }
 
     private void initTable() {

@@ -334,7 +334,7 @@ public class Login extends RoundedJFrame {
             System.out.println(gv.getMatKhau());
             if (password.equals(gv.getMatKhau())) {
                 MainFrame mainFrame = new MainFrame();
-                mainFrame.initComponents(new ClassroomPanel());
+                mainFrame.initComponents(ClassroomPanel.getInstance());
                 mainFrame.setVisible(true);
                 this.dispose();
             } else {
@@ -350,7 +350,7 @@ public class Login extends RoundedJFrame {
                 }
                 else {
                     MainFrame mainFrame = new MainFrame();
-                    mainFrame.initComponents(new ClassroomPanel());
+                    mainFrame.initComponents(ClassroomPanel.getInstance());
                     mainFrame.setVisible(true);
                     this.dispose();
                 }

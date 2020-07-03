@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class ClassroomPanel extends JPanel {
+    private static ClassroomPanel instance;
     // DEFINE VALUES
     private static final Font DEFAULT_FONT = new Font("Roboto", 0, 18);
     private static final Color PANEL_BACKGROUND_COLOR = new Color(88, 102, 146);
@@ -35,12 +36,15 @@ public class ClassroomPanel extends JPanel {
     private List<SinhVienEntity> studentList = new ArrayList<>();
     private String classIDMain = "";
 
-    public ClassroomPanel() {
+    private ClassroomPanel() {
         initComponents();
     }
 
-    public ClassroomPanel(String classID) {
-        this.classIDMain = classID; initComponents();
+    public static ClassroomPanel getInstance() {
+        if (instance == null) {
+            instance = new ClassroomPanel();
+        }
+        return instance;
     }
 
     private void initTable() {

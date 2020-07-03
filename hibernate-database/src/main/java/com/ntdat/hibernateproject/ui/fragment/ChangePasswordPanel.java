@@ -11,8 +11,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ChangePasswordPanel extends JPanel {
+    private static ChangePasswordPanel instance;
     private static final Font DEFAULT_FONT = new Font("Roboto", 0, 18);
-    private static final Color PANEL_BACKGROUND_COLOR = new Color(88, 102, 146);
 
     private FlatPasswordInput edtPassword;
     private JLabel txtPassword;
@@ -27,8 +27,15 @@ public class ChangePasswordPanel extends JPanel {
     private JLabel txtConfirmPassword;
     private FlatPasswordInput edtConfirmPassword;
 
-    public ChangePasswordPanel() {
+    private ChangePasswordPanel() {
         initComponents();
+    }
+
+    public static ChangePasswordPanel getInstance() {
+        if (instance == null) {
+            instance = new ChangePasswordPanel();
+        }
+        return instance;
     }
 
     private void initComponents() {

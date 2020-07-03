@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class SchedulePanel extends JPanel {
+    private static SchedulePanel instance;
     // DEFINE VALUES
     private static final Font DEFAULT_FONT = new Font("Roboto", 0, 18);
     private static final Color PANEL_BACKGROUND_COLOR = new Color(88, 102, 146);
@@ -34,8 +35,15 @@ public class SchedulePanel extends JPanel {
 
     private List<ClassSubject> subjectList = new ArrayList<>();
 
-    public SchedulePanel() {
+    private SchedulePanel() {
         initComponents();
+    }
+
+    public static SchedulePanel getInstance() {
+        if (instance == null) {
+            instance = new SchedulePanel();
+        }
+        return instance;
     }
 
     private void initTable() {

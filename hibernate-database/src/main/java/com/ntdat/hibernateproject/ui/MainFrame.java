@@ -61,31 +61,31 @@ public class MainFrame extends RoundedJFrame {
         btnClassroom.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 getContentPane().removeAll();
-                initComponents(new ClassroomPanel());
+                initComponents(ClassroomPanel.getInstance());
             }
         });
         btnSchedule.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 getContentPane().removeAll();
-                initComponents(new SchedulePanel());
+                initComponents(SchedulePanel.getInstance());
             }
         });
         btnScores.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 getContentPane().removeAll();
-                initComponents(new ScoresPanel());
+                initComponents(ScoresPanel.getInstance());
             }
         });
         btnReExamination.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 getContentPane().removeAll();
-                initComponents(new ReExaminationPanel());
+                initComponents(ReExaminationPanel.getInstance());
             }
         });
         btnChangePassword.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 getContentPane().removeAll();
-                initComponents(new ChangePasswordPanel());
+                initComponents(ChangePasswordPanel.getInstance());
             }
         });
         btnLogOut.addMouseListener(new java.awt.event.MouseAdapter() {
