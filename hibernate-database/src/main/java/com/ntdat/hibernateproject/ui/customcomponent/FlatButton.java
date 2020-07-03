@@ -21,11 +21,10 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;  
 import javax.swing.JButton;  
 
-public class FlatButton extends JButton {  
-  
-    private Color MouseHover = new Color(25, 123, 189);
-    private Color MousePress = new Color(36, 168, 110);  
-    private Color WarnaBackground = new Color(18, 94, 138);
+public class FlatButton extends JButton {
+    private Color mouseHoverBackground = new Color(58,66,129);
+    private Color mousePressBackground = new Color(30,34,82);
+    private Color defaultBackground = new Color(36,55,114);
     private boolean enter, press;  
   
     public boolean isEnter() {  
@@ -46,7 +45,8 @@ public class FlatButton extends JButton {
         repaint();  
     }  
   
-    public FlatButton() {  
+    public FlatButton() {
+        setFont(new Font("Roboto", 0, 18));
         setOpaque(false);  
         setBorderPainted(false);  
         setFocusPainted(false);  
@@ -81,10 +81,11 @@ public class FlatButton extends JButton {
         });  
     }  
     
-    public FlatButton(Color mouseHover, Color mousePress, Color warnaBackground ) {  
-        this.MouseHover = mouseHover;
-        this.MousePress = mousePress;
-        this.WarnaBackground = warnaBackground;
+    public FlatButton(Color mouseHoverBackground, Color mousePressBackground, Color defaultBackground ) {
+        this.mouseHoverBackground = mouseHoverBackground;
+        this.mousePressBackground = mousePressBackground;
+        this.defaultBackground = defaultBackground;
+        setFont(new Font("Roboto", 0, 18));
         setOpaque(false);  
         setBorderPainted(false);  
         setFocusPainted(false);  
@@ -122,44 +123,42 @@ public class FlatButton extends JButton {
     @Override  
     protected void paintComponent(Graphics g) {  
         Graphics2D gd = (Graphics2D) g.create();  
-        Color warna = WarnaBackground;
+        Color background = defaultBackground;
         Shape shape = new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 10, 10);  
-        if (isEnter()) {  
-            warna = MouseHover;  
-            if (isPress()) {  
-                warna = MousePress;  
+        if (isEnter()) {
+            background = mouseHoverBackground;
+            if (isPress()) {
+                background = mousePressBackground;
             }  
         }  
         gd.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);  
-        gd.setColor(warna);  
+        gd.setColor(background);
         gd.fill(shape);  
         gd.dispose();  
         super.paintComponent(g);  
     }  
   
-    public Color getWarnaBackground() {  
-        return this.WarnaBackground;
+    public Color getDefaultBackground() {
+        return this.defaultBackground;
     }  
   
-    public void setWarnaBackground(Color bgColor) {  
-        this.WarnaBackground = bgColor;
+    public void setDefaultBackground(Color bgColor) {
+        this.defaultBackground = bgColor;
+    }  
+
+    public Color getMouseHoverBackground() {
+        return this.mouseHoverBackground;
     }  
   
-//Warna mouse hover Button  
-    public Color getMouseHover() {  
-        return this.MouseHover;  
+    public void setMouseHoverBackground(Color bgColor) {
+        this.mouseHoverBackground = bgColor;
+    }  
+
+    public Color getMousePressBackground() {
+        return this.mousePressBackground;
     }  
   
-    public void setMouseHover(Color mousehover) {  
-        this.MouseHover = mousehover;  
-    }  
-  
-//Warna mouse press Button  
-    public Color getMousePress() {  
-        return this.MousePress;  
-    }  
-  
-    public void setMousePress(Color mousepress) {  
-        this.MousePress = mousepress;  
+    public void setMousePressBackground(Color bgColor) {
+        this.mousePressBackground = bgColor;
     }  
 }  

@@ -21,10 +21,14 @@ import java.util.List;
 import java.util.Vector;
 
 public class ReExaminationPanel extends JPanel {
-    private JScrollPane scrpnlTable;
+    // DEFINE VALUES
+    private static final Font DEFAULT_FONT = new Font("Roboto", 0, 18);
+    private static final Color PANEL_BACKGROUND_COLOR = new Color(88, 102, 146);
+    private static final Vector<String> TABLE_HEADER = new Vector<String>(Arrays.asList("STT", "MSSV", "Họ và tên", "Môn phúc khảo", "Tình trạng"));
+
+
     private JTable tblRequests;
     private FlatButton btnSearch;
-    private FlatButton btnImportCSV;
     private FlatButton btnConfirm;
     private FlatButton btnCancel;
     private JLabel txtTime;
@@ -50,53 +54,129 @@ public class ReExaminationPanel extends JPanel {
     private FlatTextArea txaReason;
     private FlatTextInput edtSearch;
 
-    private List<PhucKhaoEntity> reexaminationList = new ArrayList<>();
-    private Vector<String> tableHeader = new Vector<String>(Arrays.asList("STT", "MSSV", "Họ và tên", "Môn phúc khảo", "Tình trạng"));
-
-
     public ReExaminationPanel() {
         initComponents();
     }
 
     private void initComponents() {
-        setBackground(new Color(88, 102, 146));
+        setBackground(PANEL_BACKGROUND_COLOR);
         setSize(1280,768);
         setVisible(true);
-        scrpnlTable = new javax.swing.JScrollPane();
-        tblRequests = new javax.swing.JTable();
-        btnSearch = new FlatButton(new Color(58,66,129), new Color(30,34,82), new Color(36,55,114));
-        btnImportCSV = new FlatButton(new Color(58,66,129), new Color(30,34,82), new Color(36,55,114));
-        btnConfirm = new FlatButton(new Color(58,66,129), new Color(30,34,82), new Color(36,55,114));
-        btnCancel = new FlatButton(new Color(58,66,129), new Color(30,34,82), new Color(71,83,114));
-        txtTime = new JLabel();
-        edtStartTime = new FlatTextInput();
-        txtTo = new JLabel();
-        edtEndTime = new FlatTextInput();
 
-        pnlDetails = new RoundedPanel(10);
 
-        txtDetails = new JLabel();
-        txtStudentId = new JLabel();
-        edtStudentId = new FlatTextInput();
-        txtFullName = new JLabel();
-        edtFullName = new FlatTextInput();
-        txtSubject = new JLabel();
-        edtSubject = new FlatTextInput();
-        txtColumn = new JLabel();
-        edtColumn = new FlatTextInput();
-        txtCurrentScore = new JLabel();
-        edtCurrentScore = new FlatTextInput();
-        txtWishScore = new JLabel();
-        edtWishScore = new FlatTextInput();
-
-        txtReason = new JLabel();
-        scrpnlTextArea = new javax.swing.JScrollPane();
-        txaReason = new FlatTextArea();
         edtSearch = new FlatTextInput();
 
+        btnSearch = new FlatButton();
+        btnSearch.setText("Tìm kiếm");
+
+        btnConfirm = new FlatButton();
+        btnConfirm.setText("Xác nhận");
+
+        btnCancel = new FlatButton();
+        btnCancel.setText("Hủy bỏ");
+
+        txtTime = new JLabel();
+        txtTime.setFont(DEFAULT_FONT);
+        txtTime.setForeground(Color.WHITE);
+        txtTime.setText("Thời gian phúc khảo:");
+
+        edtStartTime = new FlatTextInput();
+        edtStartTime.setFont(DEFAULT_FONT);
+        edtStartTime.setToolTipText("");
+
+        txtTo = new JLabel();
+        txtTo.setFont(DEFAULT_FONT);
+        txtTo.setForeground(Color.WHITE);
+        txtTo.setText("-");
+
+        edtEndTime = new FlatTextInput();
+        edtEndTime.setFont(DEFAULT_FONT);
+        edtEndTime.setToolTipText("");
+
+        txtDetails = new JLabel();
+        txtDetails.setFont(new Font("Roboto", 1, 24));
+        txtDetails.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtDetails.setText("Thông tin chi tiết");
+
+        edtStudentId = new FlatTextInput();
+        edtStudentId.setFont(DEFAULT_FONT);
+        edtStudentId.setToolTipText("");
+
+        txtStudentId = new JLabel();
+        txtStudentId.setFont(DEFAULT_FONT);
+        txtStudentId.setText("MSSV");
+
+        txtFullName = new JLabel();
+        txtFullName.setFont(DEFAULT_FONT);
+        txtFullName.setText("Họ và tên");
+
+        edtFullName = new FlatTextInput();
+        edtFullName.setFont(DEFAULT_FONT);
+        edtFullName.setToolTipText("");
+
+        txtSubject = new JLabel();
+        txtSubject.setFont(DEFAULT_FONT);
+        txtSubject.setText("Môn phúc khảo");
+
+        edtSubject = new FlatTextInput();
+        edtSubject.setFont(DEFAULT_FONT);
+        edtSubject.setToolTipText("");
+
+        edtColumn = new FlatTextInput();
+        edtColumn.setFont(DEFAULT_FONT);
+        edtColumn.setToolTipText("");
+
+        txtColumn = new JLabel();
+        txtColumn.setFont(DEFAULT_FONT);
+        txtColumn.setText("Cột điểm phúc khảo");
+
+        txtCurrentScore = new JLabel();
+        txtCurrentScore.setFont(DEFAULT_FONT);
+        txtCurrentScore.setText("Điểm hiện tại");
+
+        edtCurrentScore = new FlatTextInput();
+        edtCurrentScore.setFont(DEFAULT_FONT);
+        edtCurrentScore.setToolTipText("");
+
+        edtWishScore = new FlatTextInput();
+        edtWishScore.setFont(DEFAULT_FONT);
+        edtWishScore.setToolTipText("");
+
+        txtWishScore = new JLabel();
+        txtWishScore.setFont(DEFAULT_FONT);
+        txtWishScore.setText("Điểm mong muốn");
+
+        txtReason = new JLabel();
+        txtReason.setFont(DEFAULT_FONT);
+        txtReason.setText("Lí do");
+
+        JScrollPane scrpnlTable = new JScrollPane();
         scrpnlTable.getVerticalScrollBar().setUI(new MyScrollbarUI());
+
+        tblRequests = new javax.swing.JTable();
         tblRequests.getTableHeader().setDefaultRenderer(new HeaderRenderer());
-        tblRequests.setFont(new Font("Roboto", 0, 18)); // NOI18N
+        tblRequests.setFont(DEFAULT_FONT);
+
+        scrpnlTextArea = new javax.swing.JScrollPane();
+        scrpnlTextArea.getVerticalScrollBar().setUI(new MyScrollbarUI());
+        scrpnlTextArea.getHorizontalScrollBar().setUI(new MyScrollbarUI());
+        scrpnlTextArea.setBorder(null);
+        scrpnlTextArea.setOpaque(false);
+
+        Border border = BorderFactory.createLineBorder(new Color(23,55,212));
+        txaReason = new FlatTextArea();
+        txaReason.setBorder(BorderFactory.createCompoundBorder(border,
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        txaReason.setColumns(20);
+        txaReason.setFont(DEFAULT_FONT);
+        txaReason.setLineWrap(true);
+        txaReason.setRows(5);
+        txaReason.setToolTipText("");
+        scrpnlTextArea.setViewportView(txaReason);
+
+        edtSearch = new FlatTextInput();
+        edtSearch.setFont(DEFAULT_FONT);
+        edtSearch.setToolTipText("");
 
         final List<PhucKhaoEntity> phucKhaoEntityList = ReExaminationDAO.getReExaminations();
         Vector table = new Vector();
@@ -112,7 +192,7 @@ public class ReExaminationPanel extends JPanel {
             table.add(record);
         }
 
-        tblRequests.setModel(new javax.swing.table.DefaultTableModel(table, tableHeader));
+        tblRequests.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment( JLabel.CENTER );
         tblRequests.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
@@ -154,94 +234,8 @@ public class ReExaminationPanel extends JPanel {
         });
 
 
-
-        btnSearch.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        btnSearch.setText("Tìm kiếm");
-
-        btnImportCSV.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        btnImportCSV.setText("Cập nhật");
-
-        btnConfirm.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        btnConfirm.setText("Xác nhận");
-
-        btnCancel.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        btnCancel.setText("Hủy bỏ");
-
-        txtTime.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        txtTime.setForeground(new Color(255, 255, 255));
-        txtTime.setText("Thời gian phúc khảo:");
-
-        edtStartTime.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        edtStartTime.setToolTipText("");
-
-        txtTo.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        txtTo.setForeground(new Color(255, 255, 255));
-        txtTo.setText("-");
-
-        edtEndTime.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        edtEndTime.setToolTipText("");
-
+        pnlDetails = new RoundedPanel(10);
         pnlDetails.setBackground(new Color(239, 239, 239));
-
-        txtDetails.setFont(new Font("Roboto", 1, 24)); // NOI18N
-        txtDetails.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txtDetails.setText("Thông tin chi tiết");
-
-        edtStudentId.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        edtStudentId.setToolTipText("");
-
-        txtStudentId.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        txtStudentId.setText("MSSV");
-
-        txtFullName.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        txtFullName.setText("Họ và tên");
-
-        edtFullName.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        edtFullName.setToolTipText("");
-
-        txtSubject.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        txtSubject.setText("Môn phúc khảo");
-
-        edtSubject.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        edtSubject.setToolTipText("");
-
-        edtColumn.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        edtColumn.setToolTipText("");
-
-        txtColumn.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        txtColumn.setText("Cột điểm phúc khảo");
-
-        txtCurrentScore.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        txtCurrentScore.setText("Điểm hiện tại");
-
-        edtCurrentScore.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        edtCurrentScore.setToolTipText("");
-
-        edtWishScore.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        edtWishScore.setToolTipText("");
-
-        txtWishScore.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        txtWishScore.setText("Điểm mong muốn");
-
-        txtReason.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        txtReason.setText("Lí do");
-
-        scrpnlTextArea.getVerticalScrollBar().setUI(new MyScrollbarUI());
-        scrpnlTextArea.getHorizontalScrollBar().setUI(new MyScrollbarUI());
-        scrpnlTextArea.setBorder(null);
-        scrpnlTextArea.setOpaque(false);
-
-        //txaReason.setBorder(BorderFactory.createCompoundBorder(txaReason.getBorder(), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        Border border = BorderFactory.createLineBorder(new Color(23,55,212));
-        txaReason.setBorder(BorderFactory.createCompoundBorder(border,
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-        txaReason.setColumns(20);
-        txaReason.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        txaReason.setLineWrap(true);
-        txaReason.setRows(5);
-        txaReason.setToolTipText("");
-        scrpnlTextArea.setViewportView(txaReason);
-
         javax.swing.GroupLayout pnlDetailsLayout = new javax.swing.GroupLayout(pnlDetails);
         pnlDetails.setLayout(pnlDetailsLayout);
         pnlDetailsLayout.setHorizontalGroup(
@@ -305,9 +299,6 @@ public class ReExaminationPanel extends JPanel {
                                 .addContainerGap())
         );
 
-        edtSearch.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        edtSearch.setToolTipText("");
-
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(this);
         this.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -325,8 +316,6 @@ public class ReExaminationPanel extends JPanel {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(edtEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(btnImportCSV)
-                                                .addGap(63, 63, 63)
                                                 .addComponent(edtSearch)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(btnSearch)
@@ -349,7 +338,6 @@ public class ReExaminationPanel extends JPanel {
                                 .addContainerGap()
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btnImportCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtTime)
                                         .addComponent(edtStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtTo)

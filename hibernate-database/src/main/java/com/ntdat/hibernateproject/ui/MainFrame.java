@@ -12,6 +12,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends RoundedJFrame {
+    // DEFINE VALUES
+    private static final Font DEFAULT_FONT = new Font("Roboto", 0, 18);
+    private static final Color PANEL_BACKGROUND_COLOR = new Color(88, 102, 146);
+    private static final Color MOUSE_HOVER_NAV_BUTTON = new Color(36,55,114);
+    private static final Color MOUSE_PRESS_NAV_BUTTON = new Color(36,55,114);
+    private static final Color DEFAULT_NAV_BUTTON = new Color(88,102,146);
+
     private String username;
     private String password;
 
@@ -23,32 +30,32 @@ public class MainFrame extends RoundedJFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(1280, 768));
         background = new javax.swing.JPanel();
-        background.setBackground(new Color(88, 102, 146));
+        background.setBackground(PANEL_BACKGROUND_COLOR);
         titleBar = new javax.swing.JPanel();
         btnClose = new RoundedPanel(10);
         txtClose = new JLabel();
         btnMinimize = new RoundedPanel(10);
         txtMinimize = new JLabel();
         txtProgramName = new JLabel();
-        txtProgramName.setFont(new Font("Roboto", 0, 18)); // NOI18N
-        txtProgramName.setForeground(new Color(255, 255, 255));
+        txtProgramName.setFont(DEFAULT_FONT);
+        txtProgramName.setForeground(Color.WHITE);
         txtProgramName.setText("Hibernate Project v1.0");
 
         sidePanel = new javax.swing.JPanel();
 
         txtPermission = new JLabel();
-        txtPermission.setFont(new Font("Roboto", 0, 36)); // NOI18N
-        txtPermission.setForeground(new Color(255, 255, 255));
+        txtPermission.setFont(new Font("Roboto", 0, 36));
+        txtPermission.setForeground(Color.WHITE);
         txtPermission.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtPermission.setText("GIÁO VỤ");
 
         spr1 = new javax.swing.JSeparator();
-        btnClassroom = new FlatButton(new Color(36,55,114), new Color(36,55,114), new Color(88,102,146));
-        btnSchedule = new FlatButton(new Color(36,55,114), new Color(36,55,114), new Color(88,102,146));
-        btnScores = new FlatButton(new Color(36,55,114), new Color(36,55,114), new Color(88,102,146));
-        btnReExamination = new FlatButton(new Color(36,55,114), new Color(36,55,114), new Color(88,102,146));
-        btnChangePassword = new FlatButton(new Color(36,55,114), new Color(36,55,114), new Color(88,102,146));
-        btnLogOut = new FlatButton(new Color(36,55,114), new Color(36,55,114), new Color(88,102,146));
+        btnClassroom = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btnSchedule = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btnScores = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btnReExamination = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btnChangePassword = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btnLogOut = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
 
         // SWITCH TABS
         btnClassroom.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -114,8 +121,8 @@ public class MainFrame extends RoundedJFrame {
             }
         });
 
-        txtClose.setFont(new Font("Roboto", 1, 28)); // NOI18N
-        txtClose.setForeground(new Color(255, 255, 255));
+        txtClose.setFont(new Font("Roboto", 1, 28));
+        txtClose.setForeground(Color.WHITE);
         txtClose.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtClose.setText("×");
         txtClose.setAlignmentY(0.0F);
@@ -150,8 +157,8 @@ public class MainFrame extends RoundedJFrame {
             }
         });
 
-        txtMinimize.setFont(new Font("Roboto", 1, 28)); // NOI18N
-        txtMinimize.setForeground(new Color(255, 255, 255));
+        txtMinimize.setFont(new Font("Roboto", 1, 28));
+        txtMinimize.setForeground(Color.WHITE);
         txtMinimize.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtMinimize.setText("-");
         txtMinimize.setAlignmentY(0.0F);
@@ -172,8 +179,6 @@ public class MainFrame extends RoundedJFrame {
                 .addComponent(txtMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
-
-        ///////////////////////////////////
 
         javax.swing.GroupLayout titleBarLayout = new javax.swing.GroupLayout(titleBar);
         titleBar.setLayout(titleBarLayout);
@@ -201,30 +206,26 @@ public class MainFrame extends RoundedJFrame {
 
         sidePanel.setBackground(new Color(30, 34, 82));
 
-
-
         spr1.setBackground(new Color(88, 102, 146));
         spr1.setForeground(new Color(88, 102, 146));
 
-        btnClassroom.setFont(new Font("Roboto", 0, 18)); // NOI18N
+        btnClassroom.setFont(DEFAULT_FONT);
         btnClassroom.setText("Danh sách lớp");
 
-        btnSchedule.setFont(new Font("Roboto", 0, 18)); // NOI18N
+        btnSchedule.setFont(DEFAULT_FONT);
         btnSchedule.setText("Thời khóa biểu");
 
-        btnScores.setFont(new Font("Roboto", 0, 18)); // NOI18N
+        btnScores.setFont(DEFAULT_FONT);
         btnScores.setText("Tra cứu điểm");
 
-        btnReExamination.setFont(new Font("Roboto", 0, 18)); // NOI18N
+        btnReExamination.setFont(DEFAULT_FONT);
         btnReExamination.setText("QL phúc khảo");
 
-        btnChangePassword.setFont(new Font("Roboto", 0, 18)); // NOI18N
+        btnChangePassword.setFont(DEFAULT_FONT);
         btnChangePassword.setText("Đổi mật khẩu");
 
-        btnLogOut.setFont(new Font("Roboto", 0, 18)); // NOI18N
+        btnLogOut.setFont(DEFAULT_FONT);
         btnLogOut.setText("Đăng xuất");
-
-
 
         javax.swing.GroupLayout sidePanelLayout = new javax.swing.GroupLayout(sidePanel);
         sidePanel.setLayout(sidePanelLayout);
@@ -265,7 +266,6 @@ public class MainFrame extends RoundedJFrame {
                 .addContainerGap(262, Short.MAX_VALUE))
         );
 
-
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
         backgroundLayout.setHorizontalGroup(
@@ -277,8 +277,6 @@ public class MainFrame extends RoundedJFrame {
                 .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
-
-
 
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -305,80 +303,44 @@ public class MainFrame extends RoundedJFrame {
 
         setSize(new Dimension(1280, 768));
         setLocationRelativeTo(null);
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    private void close(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_close
-        // TODO add your handling code here:
-        dispose();
-    }//GEN-LAST:event_close
-
-    private void moveFrame(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_moveFrame
-        // TODO add your handling code here:
+    private void moveFrame(java.awt.event.MouseEvent evt) {
         setLocation(getLocation().x + evt.getX() - this.pX, getLocation().y + evt.getY() - this.pY);
-    }//GEN-LAST:event_moveFrame
+    }
 
-    private void getPosition(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_getPosition
-        // TODO add your handling code here:
+    private void getPosition(java.awt.event.MouseEvent evt) {
         this.pX = evt.getX();
         this.pY = evt.getY();
-    }//GEN-LAST:event_getPosition
+    }
 
-    private void mouseEnterHandle(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseEnterHandle
-        // TODO add your handling code here:
+    private void mouseEnterHandle(java.awt.event.MouseEvent evt) {
         if (evt.getSource() == this.btnClose) {
             this.txtClose.setForeground(Color.red);
         };
         if (evt.getSource() == this.btnMinimize) {
             this.txtMinimize.setForeground(Color.red);
         };
-    }//GEN-LAST:event_mouseEnterHandle
+    }
 
-    private void mouseExitHandle(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseExitHandle
-        // TODO add your handling code here:
+    private void mouseExitHandle(java.awt.event.MouseEvent evt) {
         if (evt.getSource() == this.btnClose) {
             this.txtClose.setForeground(Color.white);
         };
         if (evt.getSource() == this.btnMinimize) {
             this.txtMinimize.setForeground(Color.white);
         };
-    }//GEN-LAST:event_mouseExitHandle
+    }
 
-    private void minimize(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimize
-        // TODO add your handling code here:
+    private void minimize(java.awt.event.MouseEvent evt) {
         this.setExtendedState(JFrame.ICONIFIED);
-    }//GEN-LAST:event_minimize
+    }
 
-    /**
-     * @param args the command line arguments
-     */
+    private void close(java.awt.event.MouseEvent evt) {
+        dispose();
+    }
+
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MainFrame().setVisible(true);
@@ -386,33 +348,24 @@ public class MainFrame extends RoundedJFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
-    private javax.swing.JButton btnAddStudent;
-    private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnClassroom;
     private javax.swing.JButton btnSchedule;
     private javax.swing.JButton btnScores;
     private javax.swing.JButton btnReExamination;
     private javax.swing.JButton btnChangePassword;
     private javax.swing.JButton btnLogOut;
-    private javax.swing.JPanel btnClose;
-    private javax.swing.JButton btnConfirm;
-    private javax.swing.JButton btnImportCSV;
-    private javax.swing.JPanel btnMinimize;
-    private javax.swing.JButton btnSearch;
-    private javax.swing.JTextField edtSearch;
     private JLabel txtPermission;
     private JLabel txtProgramName;
-    private javax.swing.JScrollPane scrpnlTable;
     private javax.swing.JSeparator spr1;
-    private javax.swing.JTable tblClassroom;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JPanel sidePanel;
     private javax.swing.JPanel titleBar;
+
+    private javax.swing.JPanel btnClose;
+    private javax.swing.JPanel btnMinimize;
     private JLabel txtClose;
     private JLabel txtMinimize;
-    // End of variables declaration//GEN-END:variables
     private int pX;
     private int pY;
 }

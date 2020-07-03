@@ -9,6 +9,13 @@ public class TaiKhoanEntity {
     private String taiKhoan;
     private String matKhau;
 
+    public TaiKhoanEntity() {}
+
+    public TaiKhoanEntity(String taiKhoan, String matKhau) {
+        this.taiKhoan = taiKhoan;
+        this.matKhau = matKhau;
+    }
+
     @Id
     @Column(name = "TaiKhoan")
     public String getTaiKhoan() {
