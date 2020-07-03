@@ -43,7 +43,13 @@ public class FlatButton extends JButton {
     public void setPress(boolean press) {  
         this.press = press;  
         repaint();  
-    }  
+    }
+
+    public void setColors(Color hoverBg, Color pressBg, Color defaultBg) {
+        mouseHoverBackground = hoverBg;
+        mousePressBackground = pressBg;
+        defaultBackground = defaultBg;
+    }
   
     public FlatButton() {
         setFont(new Font("Roboto", 0, 18));

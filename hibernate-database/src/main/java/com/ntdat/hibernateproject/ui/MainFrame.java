@@ -15,17 +15,107 @@ public class MainFrame extends RoundedJFrame {
     // DEFINE VALUES
     private static final Font DEFAULT_FONT = new Font("Roboto", 0, 18);
     private static final Color PANEL_BACKGROUND_COLOR = new Color(88, 102, 146);
-    private static final Color MOUSE_HOVER_NAV_BUTTON = new Color(36,55,114);
+    private static final Color MOUSE_HOVER_NAV_BUTTON = new Color(51, 74, 137);
     private static final Color MOUSE_PRESS_NAV_BUTTON = new Color(36,55,114);
     private static final Color DEFAULT_NAV_BUTTON = new Color(88,102,146);
 
     private String username;
     private String password;
 
-    public MainFrame() {}
+    public MainFrame() {initComponents();}
 
-    public void initComponents(JPanel mainPanel) {
-        pnlMain = mainPanel;
+    private void initSidePanelLayout() {
+        javax.swing.GroupLayout sidePanelLayout = new javax.swing.GroupLayout(sidePanel);
+        sidePanel.setLayout(sidePanelLayout);
+        sidePanelLayout.setHorizontalGroup(
+                sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtPermission, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidePanelLayout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addGroup(sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(btnClassroom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(spr1)
+                                        .addComponent(btnSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                        .addComponent(btnScores, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                        .addComponent(btnReExamination, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                        .addComponent(btnChangePassword, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                        .addComponent(btnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
+                                .addGap(2, 2, 2))
+        );
+        sidePanelLayout.setVerticalGroup(
+                sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(sidePanelLayout.createSequentialGroup()
+                                .addGap(44, 44, 44)
+                                .addComponent(txtPermission)
+                                .addGap(37, 37, 37)
+                                .addComponent(spr1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(btnClassroom, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(btnSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(btnScores, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(btnReExamination, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(btnChangePassword, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(262, Short.MAX_VALUE))
+        );
+    }
+
+    private void initBackgroundLayout() {
+        javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
+        background.setLayout(backgroundLayout);
+        backgroundLayout.setHorizontalGroup(
+                backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(titleBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(backgroundLayout.createSequentialGroup()
+                                .addComponent(sidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(0, 0, 0))
+        );
+
+        backgroundLayout.setVerticalGroup(
+                backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(backgroundLayout.createSequentialGroup()
+                                .addComponent(titleBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(sidePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(backgroundLayout.createSequentialGroup()
+                                                .addGap(0, 0, 0)
+                                                .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGap(0, 0, 0))))
+        );
+    }
+
+    private void initLayout() {
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+    }
+
+    private void setActive(FlatButton btn) {
+        btnClassroom.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btnSchedule.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btnScores.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btnReExamination.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btnChangePassword.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btnLogOut.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btn.setColors(MOUSE_PRESS_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON);
+    }
+
+    public void initComponents() {
+        pnlMain = ClassroomPanel.getInstance();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(1280, 768));
@@ -50,7 +140,7 @@ public class MainFrame extends RoundedJFrame {
         txtPermission.setText("GIÁO VỤ");
 
         spr1 = new javax.swing.JSeparator();
-        btnClassroom = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btnClassroom = new FlatButton(MOUSE_PRESS_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON);
         btnSchedule = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
         btnScores = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
         btnReExamination = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
@@ -60,39 +150,59 @@ public class MainFrame extends RoundedJFrame {
         // SWITCH TABS
         btnClassroom.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                getContentPane().removeAll();
-                initComponents(ClassroomPanel.getInstance());
+                setActive(btnClassroom);
+                background.removeAll();
+                pnlMain = ClassroomPanel.getInstance();
+                initBackgroundLayout();
+                pnlMain.revalidate();
+                pnlMain.repaint();
             }
         });
         btnSchedule.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                getContentPane().removeAll();
-                initComponents(SchedulePanel.getInstance());
+                setActive(btnSchedule);
+                background.removeAll();
+                pnlMain = SchedulePanel.getInstance();
+                initBackgroundLayout();
+                pnlMain.revalidate();
+                pnlMain.repaint();
             }
         });
         btnScores.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                getContentPane().removeAll();
-                initComponents(ScoresPanel.getInstance());
+                setActive(btnScores);
+                background.removeAll();
+                pnlMain = ScoresPanel.getInstance();
+                initBackgroundLayout();
+                pnlMain.revalidate();
+                pnlMain.repaint();
             }
         });
         btnReExamination.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                getContentPane().removeAll();
-                initComponents(ReExaminationPanel.getInstance());
+                setActive(btnReExamination);
+                background.removeAll();
+                pnlMain = ReExaminationPanel.getInstance();
+                initBackgroundLayout();
+                pnlMain.revalidate();
+                pnlMain.repaint();
             }
         });
         btnChangePassword.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                getContentPane().removeAll();
-                initComponents(ChangePasswordPanel.getInstance());
+                setActive(btnChangePassword);
+                background.removeAll();
+                pnlMain = ChangePasswordPanel.getInstance();
+                initBackgroundLayout();
+                pnlMain.revalidate();
+                pnlMain.repaint();
             }
         });
         btnLogOut.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Login login = new Login();
-                login.setVisible(true);
-                dispose();
+            Login login = new Login();
+            login.setVisible(true);
+            dispose();
             }
         });
 
@@ -227,79 +337,9 @@ public class MainFrame extends RoundedJFrame {
         btnLogOut.setFont(DEFAULT_FONT);
         btnLogOut.setText("Đăng xuất");
 
-        javax.swing.GroupLayout sidePanelLayout = new javax.swing.GroupLayout(sidePanel);
-        sidePanel.setLayout(sidePanelLayout);
-        sidePanelLayout.setHorizontalGroup(
-            sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(txtPermission, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidePanelLayout.createSequentialGroup()
-                .addGap(2, 2, 2)
-                .addGroup(sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnClassroom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(spr1)
-                    .addComponent(btnSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                    .addComponent(btnScores, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                    .addComponent(btnReExamination, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                    .addComponent(btnChangePassword, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                    .addComponent(btnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
-                .addGap(2, 2, 2))
-        );
-        sidePanelLayout.setVerticalGroup(
-            sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(sidePanelLayout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(txtPermission)
-                .addGap(37, 37, 37)
-                .addComponent(spr1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(btnClassroom, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(btnSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(btnScores, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(btnReExamination, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(btnChangePassword, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(262, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
-        background.setLayout(backgroundLayout);
-        backgroundLayout.setHorizontalGroup(
-            backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(titleBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(backgroundLayout.createSequentialGroup()
-                .addComponent(sidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
-        );
-
-        backgroundLayout.setVerticalGroup(
-            backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(backgroundLayout.createSequentialGroup()
-                .addComponent(titleBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sidePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(backgroundLayout.createSequentialGroup()
-                        .addGap(0, 0, 0)
-                        .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(0, 0, 0))))
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        initSidePanelLayout();
+        initBackgroundLayout();
+        initLayout();
 
         setSize(new Dimension(1280, 768));
         setLocationRelativeTo(null);
@@ -349,12 +389,12 @@ public class MainFrame extends RoundedJFrame {
     }
 
     private javax.swing.JPanel background;
-    private javax.swing.JButton btnClassroom;
-    private javax.swing.JButton btnSchedule;
-    private javax.swing.JButton btnScores;
-    private javax.swing.JButton btnReExamination;
-    private javax.swing.JButton btnChangePassword;
-    private javax.swing.JButton btnLogOut;
+    private FlatButton btnClassroom;
+    private FlatButton btnSchedule;
+    private FlatButton btnScores;
+    private FlatButton btnReExamination;
+    private FlatButton btnChangePassword;
+    private FlatButton btnLogOut;
     private JLabel txtPermission;
     private JLabel txtProgramName;
     private javax.swing.JSeparator spr1;
