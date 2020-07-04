@@ -320,16 +320,16 @@ public class MainFrame extends RoundedJFrame {
         spr1.setForeground(new Color(88, 102, 146));
 
         btnClassroom.setFont(DEFAULT_FONT);
-        btnClassroom.setText("Danh sách lớp");
+        btnClassroom.setText("Sinh viên");
 
         btnSchedule.setFont(DEFAULT_FONT);
         btnSchedule.setText("Thời khóa biểu");
 
         btnScores.setFont(DEFAULT_FONT);
-        btnScores.setText("Tra cứu điểm");
+        btnScores.setText("Điểm số");
 
         btnReExamination.setFont(DEFAULT_FONT);
-        btnReExamination.setText("QL phúc khảo");
+        btnReExamination.setText("Phúc khảo");
 
         btnChangePassword.setFont(DEFAULT_FONT);
         btnChangePassword.setText("Đổi mật khẩu");

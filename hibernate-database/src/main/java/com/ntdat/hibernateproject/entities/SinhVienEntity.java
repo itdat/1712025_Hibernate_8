@@ -3,6 +3,7 @@ package com.ntdat.hibernateproject.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Vector;
 
 @Entity
 @Table(name = "sinh_vien", schema = "hibernate-database", catalog = "")
@@ -14,6 +15,15 @@ public class SinhVienEntity implements Serializable {
     private String maLop;
 
     public SinhVienEntity() {}
+
+    public SinhVienEntity(Vector<String> values) {
+        if (values.size() != 5) return;
+        this.mssv = values.get(0);
+        this.hoVaTen = values.get(1);
+        this.gioiTinh = values.get(2);
+        this.cmnd = values.get(3);
+        this.maLop = values.get(4);
+    }
 
     public SinhVienEntity(String mssv, String hoVaTen, String gioiTinh, String cmnd, String maLop) {
         this.mssv = mssv;

@@ -73,9 +73,9 @@ public class ScoresPanel extends JPanel {
         setSize(1280,768);
         setVisible(true);
 
-        edtSearch = new FlatTextInput();
+        edtSearch = new FlatTextInput("Nhập mã lớp");
         edtSearch.setFont(DEFAULT_FONT);
-        edtSearch.setToolTipText("");
+        edtSearch.setToolTipText("<html><b>Xem điểm của sinh viên theo lớp học.</b><br/>- Mã lớp theo môn học - vd: 17CTT1-WDS1</html>");
 
         btnSearch = new FlatButton();
         btnSearch.setText("Tìm kiếm");

@@ -64,9 +64,9 @@ public class SchedulePanel extends JPanel {
         setSize(1280,768);
         setVisible(true);
 
-        edtSearch = new FlatTextInput("Mã lớp - VD: 17CTT1");
+        edtSearch = new FlatTextInput("Nhập mã lớp");
         edtSearch.setFont(DEFAULT_FONT);
-        edtSearch.setToolTipText("");
+        edtSearch.setToolTipText("<html><b>Xem thời khóa biểu theo lớp.</b><br/>- Mã lớp mặc định - vd: 17CTT1</html>");
 
         btnSearch = new FlatButton();
         btnSearch.setText("Tìm kiếm");

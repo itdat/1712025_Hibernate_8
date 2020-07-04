@@ -4,17 +4,13 @@ import com.ntdat.hibernateproject.dao.AccountDAO;
 import com.ntdat.hibernateproject.dao.StudentDAO;
 import com.ntdat.hibernateproject.entities.SinhVienEntity;
 import com.ntdat.hibernateproject.entities.TaiKhoanEntity;
-import com.ntdat.hibernateproject.ui.customcomponent.FlatButton;
-import com.ntdat.hibernateproject.ui.customcomponent.FlatTextInput;
-import com.ntdat.hibernateproject.ui.customcomponent.HeaderRenderer;
-import com.ntdat.hibernateproject.ui.customcomponent.MyScrollbarUI;
+import com.ntdat.hibernateproject.ui.customcomponent.*;
+import com.ntdat.hibernateproject.utilities.CSVImporter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
@@ -26,14 +22,15 @@ public class ClassroomPanel extends JPanel {
     private static final Color PANEL_BACKGROUND_COLOR = new Color(88, 102, 146);
     private static final Vector<String> TABLE_HEADER = new Vector<String>(Arrays.asList("STT", "MSSV", "Họ và tên", "Giới tính", "CMND"));
 
-    private JTable tblClassroom;
+    private DefaultTableModel dataModel = new DefaultTableModel();
+
+    private JTable tblClassroom = new JTable(dataModel);
     private FlatTextInput edtSearch;
     private FlatButton btnSearch;
     private FlatButton btnAddStudent;
     private FlatButton btnConfirm;
     private FlatButton btnCancel;
-
-    private List<SinhVienEntity> studentList = new ArrayList<>();
+    
     private String classIDMain = "";
 
     private ClassroomPanel() {
@@ -60,6 +57,15 @@ public class ClassroomPanel extends JPanel {
         tblClassroom.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
         tblClassroom.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
         tblClassroom.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+
+        JTextField textField = new JTextField();
+        textField.setFont(DEFAULT_FONT);
+        textField.setHorizontalAlignment(SwingConstants.CENTER);
+        textField.setBorder(null);
+        DefaultCellEditor customCellEditor = new DefaultCellEditor(textField);
+        for (int i = 0; i < tblClassroom.getColumnCount(); i++) {
+            tblClassroom.getColumnModel().getColumn(i).setCellEditor(customCellEditor);
+        }
     }
 
     private void initComponents() {
@@ -101,6 +107,7 @@ public class ClassroomPanel extends JPanel {
         tblClassroom.setSelectionForeground(Color.BLACK);
         tblClassroom.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblClassroom.setModel(new javax.swing.table.DefaultTableModel(new Vector(), TABLE_HEADER));
+
         initTable();
 
         JScrollPane scrpnlTable = new JScrollPane();
@@ -176,49 +183,40 @@ public class ClassroomPanel extends JPanel {
 
         btnImportCSV.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JFileChooser jFileChooser = new JFileChooser();
-                jFileChooser.showDialog(getParent(), "Chọn");
-                File selectedFile = jFileChooser.getSelectedFile();
-                String[] fileComponents = selectedFile.getAbsolutePath().split("\\\\");
-                classIDMain = fileComponents[fileComponents.length - 1].replace(".csv", "");
+                CSVImporter csvImporter = new CSVImporter();
+                csvImporter.importCSV(getParent());
+                if (csvImporter.getFileName() == null) return;
+                classIDMain = csvImporter.getFileName();
+                Vector table = csvImporter.getTable();
+                dataModel.setDataVector(table,TABLE_HEADER);
+                System.out.println(classIDMain);
+                System.out.println(table);
+
                 edtSearch.setText(classIDMain);
-                Vector table = new Vector();
-                try {
-                    BufferedReader bufferedReader = new BufferedReader(new FileReader(selectedFile));
-                    table = new Vector();
-                    String line;
-                    while (true) {
-                        line = bufferedReader.readLine();
-                        String[] tokens = line.split(",");
-                        Vector record = new Vector();
-                        for (String token : tokens) {
-                            record.add(token);
-                        }
-                        table.add(record);
-                        SinhVienEntity student = new SinhVienEntity(record.get(1).toString(), record.get(2).toString(), record.get(3).toString(), record.get(4).toString(), classIDMain);
-                        studentList.add(student);
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    edtSearch.setEditable(false);
-                    btnSearch.setVisible(false);
-                    btnConfirm.setVisible(true);
-                    btnCancel.setVisible(true);
-                    tblClassroom.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
-                    initTable();
-                }
+                edtSearch.setEditable(false);
+                btnSearch.setVisible(false);
+                btnConfirm.setVisible(true);
+                btnCancel.setVisible(true);
+                tblClassroom.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
+                initTable();
             }
         });
 
         btnConfirm.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                for (SinhVienEntity student : studentList) {
-                    StudentDAO.addStudent(student);
-                    AccountDAO.addAccount(new TaiKhoanEntity(student.getMssv(), student.getCmnd()));
+                if (tblClassroom.isEditing())
+                    tblClassroom.getCellEditor().stopCellEditing();
+
+                for (int i = 0; i < dataModel.getDataVector().size(); i++) {
+                    Vector<String> record = (Vector<String>) dataModel.getDataVector().get(i);
+                    record.remove(0);
+                    record.add(classIDMain);
+                    System.out.println(record);
+                    SinhVienEntity sv = new SinhVienEntity(record);
+                    StudentDAO.addStudent(sv);
+                    AccountDAO.addAccount(new TaiKhoanEntity(sv.getMssv(), sv.getCmnd()));
                 }
+
                 tblClassroom.setModel(new javax.swing.table.DefaultTableModel(new Vector(), TABLE_HEADER));
                 edtSearch.setText("");
                 edtSearch.setEditable(true);
