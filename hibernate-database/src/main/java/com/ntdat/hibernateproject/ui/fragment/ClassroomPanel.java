@@ -1,6 +1,7 @@
 package com.ntdat.hibernateproject.ui.fragment;
 
 import com.ntdat.hibernateproject.dao.AccountDAO;
+import com.ntdat.hibernateproject.dao.ClassroomDAO;
 import com.ntdat.hibernateproject.dao.StudentDAO;
 import com.ntdat.hibernateproject.entities.SinhVienEntity;
 import com.ntdat.hibernateproject.entities.TaiKhoanEntity;
@@ -66,6 +67,23 @@ public class ClassroomPanel extends JPanel {
         for (int i = 0; i < tblClassroom.getColumnCount(); i++) {
             tblClassroom.getColumnModel().getColumn(i).setCellEditor(customCellEditor);
         }
+    }
+
+    private void updateTable() {
+        List<SinhVienEntity> sinhVienEntityList = StudentDAO.getStudents(edtSearch.getText());
+
+        Vector table = new Vector();
+        for (int i = 0; i < sinhVienEntityList.size(); i++) {
+            Vector record = new Vector();
+            record.add(String.valueOf(i+1));
+            record.add(sinhVienEntityList.get(i).getMssv());
+            record.add(sinhVienEntityList.get(i).getHoVaTen());
+            record.add(sinhVienEntityList.get(i).getGioiTinh());
+            record.add(sinhVienEntityList.get(i).getCmnd());
+            table.add(record);
+        }
+        tblClassroom.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
+        initTable();
     }
 
     private void initComponents() {
@@ -175,7 +193,15 @@ public class ClassroomPanel extends JPanel {
                     record.add(sinhVienEntityList.get(i).getCmnd());
                     table.add(record);
                 }
-                btnAddStudent.setVisible(true);
+
+                if (sinhVienEntityList.size() == 0) {
+                    JOptionPane.showMessageDialog(getParent(), "Lớp học không tồn tại. Vui lòng nhập từ file csv.", "Không tìm thấy lớp", JOptionPane.INFORMATION_MESSAGE);
+                    btnAddStudent.setVisible(false);
+                    edtSearch.setText("");
+                } else {
+                    btnAddStudent.setVisible(true);
+                }
+
                 tblClassroom.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
                 initTable();
             }
@@ -183,17 +209,17 @@ public class ClassroomPanel extends JPanel {
 
         btnImportCSV.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAddStudent.setVisible(false);
                 CSVImporter csvImporter = new CSVImporter();
                 csvImporter.importCSV(getParent());
                 if (csvImporter.getFileName() == null) return;
                 classIDMain = csvImporter.getFileName();
+
                 Vector table = csvImporter.getTable();
                 dataModel.setDataVector(table,TABLE_HEADER);
-                System.out.println(classIDMain);
-                System.out.println(table);
 
                 edtSearch.setText(classIDMain);
-                edtSearch.setEditable(false);
+//                edtSearch.setEditable(false);
                 btnSearch.setVisible(false);
                 btnConfirm.setVisible(true);
                 btnCancel.setVisible(true);
@@ -207,22 +233,47 @@ public class ClassroomPanel extends JPanel {
                 if (tblClassroom.isEditing())
                     tblClassroom.getCellEditor().stopCellEditing();
 
+                classIDMain = edtSearch.getText();
+                if (ClassroomDAO.getClassroom(classIDMain) != null) {
+                    btnAddStudent.setVisible(true);
+                    edtSearch.setEditable(true);
+                    btnSearch.setVisible(true);
+                    btnConfirm.setVisible(false);
+                    btnCancel.setVisible(false);
+                    updateTable();
+                    JOptionPane.showMessageDialog(getParent(), "Lớp học đã tồn tại", "Nhập file thất bại", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+
+                int total = dataModel.getRowCount();
+                int success = 0;
+
                 for (int i = 0; i < dataModel.getDataVector().size(); i++) {
                     Vector<String> record = (Vector<String>) dataModel.getDataVector().get(i);
                     record.remove(0);
                     record.add(classIDMain);
                     System.out.println(record);
                     SinhVienEntity sv = new SinhVienEntity(record);
-                    StudentDAO.addStudent(sv);
+                    if (StudentDAO.addStudent(sv)){
+                        success++;
+                    }
                     AccountDAO.addAccount(new TaiKhoanEntity(sv.getMssv(), sv.getCmnd()));
                 }
 
-                tblClassroom.setModel(new javax.swing.table.DefaultTableModel(new Vector(), TABLE_HEADER));
-                edtSearch.setText("");
+                btnAddStudent.setVisible(true);
                 edtSearch.setEditable(true);
                 btnSearch.setVisible(true);
                 btnConfirm.setVisible(false);
                 btnCancel.setVisible(false);
+
+                // Update table
+                updateTable();
+
+                if (success == total) {
+                    JOptionPane.showMessageDialog(getParent(), "Hoàn tất: " + success + "/" + total, "Nhập file thành công", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(getParent(), "Hoàn tất: " + success + "/" + total + "\nSinh viên trong danh sách đã tồn tại ở lớp khác.", "Nhập file chưa hoàn tất", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         });
 
