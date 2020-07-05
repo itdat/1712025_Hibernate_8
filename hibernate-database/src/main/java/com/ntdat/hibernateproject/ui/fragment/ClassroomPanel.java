@@ -6,12 +6,14 @@ import com.ntdat.hibernateproject.dao.StudentDAO;
 import com.ntdat.hibernateproject.entities.SinhVienEntity;
 import com.ntdat.hibernateproject.entities.TaiKhoanEntity;
 import com.ntdat.hibernateproject.ui.customcomponent.*;
+import com.ntdat.hibernateproject.ui.dialog.AddStudentDialog;
 import com.ntdat.hibernateproject.utilities.CSVImporter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
@@ -219,12 +221,19 @@ public class ClassroomPanel extends JPanel {
                 dataModel.setDataVector(table,TABLE_HEADER);
 
                 edtSearch.setText(classIDMain);
-//                edtSearch.setEditable(false);
                 btnSearch.setVisible(false);
                 btnConfirm.setVisible(true);
                 btnCancel.setVisible(true);
                 tblClassroom.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
                 initTable();
+            }
+        });
+
+        btnAddStudent.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Image image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+                JOptionPane.showOptionDialog(null, new AddStudentDialog(10, edtSearch.getText()), "Thêm sinh viên", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon(image), new Object[]{}, null);
+                updateTable();
             }
         });
 
