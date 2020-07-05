@@ -1,8 +1,10 @@
 package com.ntdat.hibernateproject.ui.fragment;
 
+import com.ntdat.hibernateproject.dao.ClassroomDAO;
 import com.ntdat.hibernateproject.dao.StudentDAO;
 import com.ntdat.hibernateproject.dao.SubjectDAO;
 import com.ntdat.hibernateproject.dao.SubjectDetailDAO;
+import com.ntdat.hibernateproject.entities.ChiTietLopHocEntity;
 import com.ntdat.hibernateproject.entities.ChiTietMonHocEntity;
 import com.ntdat.hibernateproject.entities.SinhVienEntity;
 import com.ntdat.hibernateproject.entities.compound.ClassSubject;
@@ -10,6 +12,7 @@ import com.ntdat.hibernateproject.ui.customcomponent.FlatButton;
 import com.ntdat.hibernateproject.ui.customcomponent.FlatTextInput;
 import com.ntdat.hibernateproject.ui.customcomponent.HeaderRenderer;
 import com.ntdat.hibernateproject.ui.customcomponent.MyScrollbarUI;
+import com.ntdat.hibernateproject.utilities.CSVImporter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -28,7 +31,8 @@ public class ScoresPanel extends JPanel {
     private static final Vector<String> TABLE_HEADER = new Vector<String>(Arrays.asList("STT", "MSSV", "Họ và tên", "Điểm GK", "Điểm CK", "Điểm khác", "Điểm tổng"));
 
     private JScrollPane scrpnlTable;
-    private JTable tblScores;
+    private DefaultTableModel dataModel = new DefaultTableModel();
+    private JTable tblScores = new JTable(dataModel);
     private FlatTextInput edtSearch;
     private FlatButton btnSearch;
     private FlatButton btnImportCSV;
@@ -66,6 +70,35 @@ public class ScoresPanel extends JPanel {
         tblScores.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
         tblScores.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
         tblScores.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+
+        JTextField textField = new JTextField();
+        textField.setFont(DEFAULT_FONT);
+        textField.setHorizontalAlignment(SwingConstants.CENTER);
+        textField.setBorder(null);
+        DefaultCellEditor customCellEditor = new DefaultCellEditor(textField);
+        for (int i = 0; i < tblScores.getColumnCount(); i++) {
+            tblScores.getColumnModel().getColumn(i).setCellEditor(customCellEditor);
+        }
+    }
+
+    private void updateTable() {
+        List<ChiTietMonHocEntity> chiTietMonHocEntityList = SubjectDetailDAO.getSubjectDetails(edtSearch.getText());
+
+        Vector table = new Vector();
+        for (int i = 0; i < chiTietMonHocEntityList.size(); i++) {
+            Vector record = new Vector();
+            record.add(String.valueOf(i+1));
+            record.add(chiTietMonHocEntityList.get(i).getMssv());
+            record.add(StudentDAO.getStudent(chiTietMonHocEntityList.get(i).getMssv()).getHoVaTen());
+            record.add(chiTietMonHocEntityList.get(i).getDiemGk());
+            record.add(chiTietMonHocEntityList.get(i).getDiemCk());
+            record.add(chiTietMonHocEntityList.get(i).getDiemKhac());
+            record.add(chiTietMonHocEntityList.get(i).getDiemTong());
+
+            table.add(record);
+        }
+        tblScores.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
+        initTable();
     }
 
     private void initComponents() {
@@ -171,6 +204,85 @@ public class ScoresPanel extends JPanel {
                 }
                 tblScores.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
                 initTable();
+            }
+        });
+
+        btnImportCSV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CSVImporter csvImporter = new CSVImporter();
+                csvImporter.importCSV(getParent());
+                if (csvImporter.getFileName() == null) return;
+                classIDMain = csvImporter.getFileName();
+
+                Vector table = csvImporter.getTable();
+                System.out.println(table);
+                dataModel.setDataVector(table,TABLE_HEADER);
+
+                edtSearch.setText(classIDMain);
+                btnSearch.setVisible(false);
+                btnConfirm.setVisible(true);
+                btnCancel.setVisible(true);
+                tblScores.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
+                initTable();
+            }
+        });
+
+        btnConfirm.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (tblScores.isEditing())
+                    tblScores.getCellEditor().stopCellEditing();
+
+                classIDMain = edtSearch.getText();
+                if (SubjectDetailDAO.getSubjectDetails(classIDMain).size() == 0) {
+                    edtSearch.setEditable(true);
+                    btnSearch.setVisible(true);
+                    btnConfirm.setVisible(false);
+                    btnCancel.setVisible(false);
+                    updateTable();
+                    JOptionPane.showMessageDialog(getParent(), "Lớp học không tồn tại.", "Nhập file thất bại", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+
+                if (!classIDMain.contains("-")) {
+                    edtSearch.setEditable(true);
+                    btnSearch.setVisible(true);
+                    btnConfirm.setVisible(false);
+                    btnCancel.setVisible(false);
+                    updateTable();
+                    JOptionPane.showMessageDialog(getParent(), "Sai định dạng tên lớp học.", "Nhập file thất bại", JOptionPane.INFORMATION_MESSAGE);
+                    edtSearch.setText("");
+                    return;
+                }
+
+                classIDMain = edtSearch.getText();
+                String classID = "", subjectID = "";
+                if (classIDMain.contains("-")) {
+                    String[] token = classIDMain.split("-");
+                    classID = token[0];
+                    subjectID = token[1];
+                }
+
+                int success = 0;
+                int total = dataModel.getRowCount();
+
+                for (int i = 0; i < dataModel.getDataVector().size(); i++) {
+                    Vector<String> record = (Vector<String>) dataModel.getDataVector().get(i);
+
+                    ChiTietMonHocEntity chiTietMonHocEntity = new ChiTietMonHocEntity(classID, subjectID, record.get(1), Double.parseDouble(record.get(3)), Double.parseDouble(record.get(4)), Double.parseDouble(record.get(5)), Double.parseDouble(record.get(6)));
+                    if (SubjectDetailDAO.updateSubjectDetail(chiTietMonHocEntity)) {
+                        success++;
+                    }
+                }
+
+                edtSearch.setEditable(true);
+                btnSearch.setVisible(true);
+                btnConfirm.setVisible(false);
+                btnCancel.setVisible(false);
+
+                // Update table
+                updateTable();
+
+                JOptionPane.showMessageDialog(getParent(), "Nhập thành công: " + success + "/" + total + ".", "Nhập file hoàn tất", JOptionPane.INFORMATION_MESSAGE);
             }
         });
     }

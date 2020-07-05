@@ -172,40 +172,6 @@ public class SchedulePanel extends JPanel {
         
         btnImportCSV.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-//                JFileChooser jFileChooser = new JFileChooser();
-//                jFileChooser.showDialog(getParent(), "Chọn");
-//                File selectedFile = jFileChooser.getSelectedFile();
-//                String[] fileComponents = selectedFile.getAbsolutePath().split("\\\\");
-//                classIDMain = fileComponents[fileComponents.length - 1].replace(".csv", "");
-//                edtSearch.setText(classIDMain);
-//                Vector table = new Vector();
-//                try {
-//                    BufferedReader bufferedReader = new BufferedReader(new FileReader(selectedFile));
-//                    table = new Vector();
-//                    String line;
-//                    while (true) {
-//                        line = bufferedReader.readLine();
-//                        String[] tokens = line.split(",");
-//                        Vector record = new Vector();
-//                        for (String token : tokens) {
-//                            record.add(token);
-//                        }
-//                        table.add(record);
-//                        ClassSubject classSubject = new ClassSubject(record.get(1).toString(), record.get(2).toString(), record.get(3).toString(), classIDMain);
-//                        subjectList.add(classSubject);
-//                    }
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                } finally {
-//                    edtSearch.setEditable(false);
-//                    btnSearch.setVisible(false);
-//                    btnConfirm.setVisible(true);
-//                    btnCancel.setVisible(true);
-//                    tblSchedule.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
-//                    initTable();
-//                }
                 CSVImporter csvImporter = new CSVImporter();
                 csvImporter.importCSV(getParent());
                 if (csvImporter.getFileName() == null) return;
@@ -250,15 +216,6 @@ public class SchedulePanel extends JPanel {
 
         btnConfirm.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-//                for (ClassSubject subject : subjectList) {
-//                    SubjectDAO.addClassSubject(subject);
-//                }
-//                tblSchedule.setModel(new javax.swing.table.DefaultTableModel(new Vector(), TABLE_HEADER));
-//                edtSearch.setText("");
-//                edtSearch.setEditable(true);
-//                btnSearch.setVisible(true);
-//                btnConfirm.setVisible(false);
-//                btnCancel.setVisible(false);
                 if (tblSchedule.isEditing())
                     tblSchedule.getCellEditor().stopCellEditing();
 

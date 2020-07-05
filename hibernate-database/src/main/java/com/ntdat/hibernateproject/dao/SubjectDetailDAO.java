@@ -101,4 +101,23 @@ public class SubjectDetailDAO {
         }
         return true;
     }
+
+    public static boolean updateSubjectDetail(ChiTietMonHocEntity subjectDetail) {
+        if (getSubjectDetail(new ChiTietMonHocEntityPK(subjectDetail.getMaLop(), subjectDetail.getMaMon(), subjectDetail.getMssv())) == null) return false;
+
+        Session session = HibernateUtilities.getSessionFactory().openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.update(subjectDetail);
+            transaction.commit();
+        } catch (PersistenceException e) {
+            transaction.rollback();
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+        return true;
+    }
 }
