@@ -64,6 +64,21 @@ public class SubjectDetailDAO {
         return chiTietMonHocEntityList;
     }
 
+    public static List<ChiTietMonHocEntity> getSubjectDetailsStudent(String studentID) {
+        Session session = HibernateUtilities.getSessionFactory().openSession();
+        List<ChiTietMonHocEntity> chiTietMonHocEntityList = null;
+        String hql = "SELECT new ChiTietMonHocEntity(ctmh.maLop, ctmh.maMon, ctmh.mssv, ctmh.diemGk, ctmh.diemCk, ctmh.diemKhac, ctmh.diemTong) FROM ChiTietMonHocEntity ctmh WHERE ctmh.mssv = '" + studentID + "'";
+        try {
+            Query query = session.createQuery(hql);
+            chiTietMonHocEntityList = query.list();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return chiTietMonHocEntityList;
+    }
+
     public static boolean addSubjectDetail(ChiTietMonHocEntity subjectDetail) {
         if (getSubjectDetail(new ChiTietMonHocEntityPK(subjectDetail.getMaLop(), subjectDetail.getMaMon(), subjectDetail.getMssv())) != null) return false;
 

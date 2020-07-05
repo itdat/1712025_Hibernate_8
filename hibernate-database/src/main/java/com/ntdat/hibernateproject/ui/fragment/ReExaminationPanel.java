@@ -65,6 +65,10 @@ public class ReExaminationPanel extends JPanel {
         return instance;
     }
 
+    public static void releaseInstance() {
+        instance = null;
+    }
+
     private void initComponents() {
         setBackground(PANEL_BACKGROUND_COLOR);
         setSize(1280,768);

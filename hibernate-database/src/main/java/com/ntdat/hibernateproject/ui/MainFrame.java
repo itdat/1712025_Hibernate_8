@@ -19,10 +19,12 @@ public class MainFrame extends RoundedJFrame {
     private static final Color MOUSE_PRESS_NAV_BUTTON = new Color(36,55,114);
     private static final Color DEFAULT_NAV_BUTTON = new Color(88,102,146);
 
-    private String username;
-    private String password;
+    private String username = "giaovu";
+    private boolean adminPermission = true;
 
     public MainFrame() {initComponents();}
+
+    public MainFrame(String username) { this.username = username; initComponents();}
 
     private void initSidePanelLayout() {
         javax.swing.GroupLayout sidePanelLayout = new javax.swing.GroupLayout(sidePanel);
@@ -33,13 +35,13 @@ public class MainFrame extends RoundedJFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidePanelLayout.createSequentialGroup()
                                 .addGap(2, 2, 2)
                                 .addGroup(sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(btnClassroom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(spr1)
-                                        .addComponent(btnSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                                        .addComponent(btnScores, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                                        .addComponent(btnReExamination, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                                        .addComponent(btnChangePassword, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                                        .addComponent(btnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
+                                        .addComponent(btn2, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                        .addComponent(btn3, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                        .addComponent(btn4, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                        .addComponent(btn5, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                        .addComponent(btn6, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
                                 .addGap(2, 2, 2))
         );
         sidePanelLayout.setVerticalGroup(
@@ -50,18 +52,56 @@ public class MainFrame extends RoundedJFrame {
                                 .addGap(37, 37, 37)
                                 .addComponent(spr1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(2, 2, 2)
-                                .addComponent(btnClassroom, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(2, 2, 2)
-                                .addComponent(btnSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(2, 2, 2)
-                                .addComponent(btnScores, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(2, 2, 2)
-                                .addComponent(btnReExamination, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(2, 2, 2)
-                                .addComponent(btnChangePassword, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btn5, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(2, 2, 2)
-                                .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btn6, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(262, Short.MAX_VALUE))
+        );
+    }
+
+    private void initSidePanelLayoutStudent() {
+        javax.swing.GroupLayout sidePanelLayout = new javax.swing.GroupLayout(sidePanel);
+        sidePanel.setLayout(sidePanelLayout);
+        sidePanelLayout.setHorizontalGroup(
+                sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtPermission, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidePanelLayout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addGroup(sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(spr1)
+                                        .addComponent(btn2, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                        .addComponent(btn3, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                        .addComponent(btn4, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                        .addComponent(btn5, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                        .addComponent(btn6, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
+                                .addGap(2, 2, 2))
+        );
+        sidePanelLayout.setVerticalGroup(
+                sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(sidePanelLayout.createSequentialGroup()
+                                .addGap(44, 44, 44)
+                                .addComponent(txtPermission)
+                                .addGap(37, 37, 37)
+                                .addComponent(spr1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(btn5, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(btn6, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }
 
@@ -105,17 +145,23 @@ public class MainFrame extends RoundedJFrame {
     }
 
     private void setActive(FlatButton btn) {
-        btnClassroom.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
-        btnSchedule.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
-        btnScores.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
-        btnReExamination.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
-        btnChangePassword.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
-        btnLogOut.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btn1.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btn2.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btn3.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btn4.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btn5.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+        btn6.setColors(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
         btn.setColors(MOUSE_PRESS_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON);
     }
 
     public void initComponents() {
-        pnlMain = ClassroomPanel.getInstance();
+        if (!username.equals("giaovu")) adminPermission = false;
+
+        if (adminPermission) {
+            pnlMain = ClassroomPanel.getInstance(adminPermission);
+        } else {
+            pnlMain = SchedulePanel.getInstance(username);
+        }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(1280, 768));
@@ -137,50 +183,56 @@ public class MainFrame extends RoundedJFrame {
         txtPermission.setFont(new Font("Roboto", 0, 36));
         txtPermission.setForeground(Color.WHITE);
         txtPermission.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txtPermission.setText("GIÁO VỤ");
 
         spr1 = new javax.swing.JSeparator();
-        btnClassroom = new FlatButton(MOUSE_PRESS_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON);
-        btnSchedule = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
-        btnScores = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
-        btnReExamination = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
-        btnChangePassword = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
-        btnLogOut = new FlatButton(MOUSE_HOVER_NAV_BUTTON, MOUSE_PRESS_NAV_BUTTON, DEFAULT_NAV_BUTTON);
+
+        btn1 = new FlatButton();
+        btn2 = new FlatButton();
+        btn3 = new FlatButton();
+        btn4 = new FlatButton();
+        btn5 = new FlatButton();
+        btn6 = new FlatButton();
+
+        if (adminPermission) {
+            setActive(btn1);
+        } else {
+            setActive(btn2);
+        }
 
         // SWITCH TABS
-        btnClassroom.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                setActive(btnClassroom);
+                setActive(btn1);
                 background.removeAll();
-                pnlMain = ClassroomPanel.getInstance();
+                pnlMain = ClassroomPanel.getInstance(adminPermission);
                 initBackgroundLayout();
                 pnlMain.revalidate();
                 pnlMain.repaint();
             }
         });
-        btnSchedule.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                setActive(btnSchedule);
+                setActive(btn2);
                 background.removeAll();
-                pnlMain = SchedulePanel.getInstance();
+                pnlMain = SchedulePanel.getInstance(username);
                 initBackgroundLayout();
                 pnlMain.revalidate();
                 pnlMain.repaint();
             }
         });
-        btnScores.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                setActive(btnScores);
+                setActive(btn3);
                 background.removeAll();
-                pnlMain = ScoresPanel.getInstance();
+                pnlMain = ScoresPanel.getInstance(username);
                 initBackgroundLayout();
                 pnlMain.revalidate();
                 pnlMain.repaint();
             }
         });
-        btnReExamination.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                setActive(btnReExamination);
+                setActive(btn4);
                 background.removeAll();
                 pnlMain = ReExaminationPanel.getInstance();
                 initBackgroundLayout();
@@ -188,9 +240,9 @@ public class MainFrame extends RoundedJFrame {
                 pnlMain.repaint();
             }
         });
-        btnChangePassword.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                setActive(btnChangePassword);
+                setActive(btn5);
                 background.removeAll();
                 pnlMain = ChangePasswordPanel.getInstance();
                 initBackgroundLayout();
@@ -198,10 +250,15 @@ public class MainFrame extends RoundedJFrame {
                 pnlMain.repaint();
             }
         });
-        btnLogOut.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
             Login login = new Login();
             login.setVisible(true);
+            ClassroomPanel.releaseInstance();
+            SchedulePanel.releaseInstance();
+            ScoresPanel.releaseInstance();
+            ReExaminationPanel.releaseInstance();
+            ChangePasswordPanel.releaseInstance();
             dispose();
             }
         });
@@ -273,6 +330,43 @@ public class MainFrame extends RoundedJFrame {
         txtMinimize.setText("-");
         txtMinimize.setAlignmentY(0.0F);
 
+        sidePanel.setBackground(new Color(30, 34, 82));
+
+        spr1.setBackground(new Color(88, 102, 146));
+        spr1.setForeground(new Color(88, 102, 146));
+
+        btn1.setFont(DEFAULT_FONT);
+        btn1.setText("Sinh viên");
+
+        btn2.setFont(DEFAULT_FONT);
+        btn2.setText("Thời khóa biểu");
+
+        btn3.setFont(DEFAULT_FONT);
+        btn3.setText("Điểm số");
+
+        btn4.setFont(DEFAULT_FONT);
+        btn4.setText("Phúc khảo");
+
+        btn5.setFont(DEFAULT_FONT);
+        btn5.setText("Đổi mật khẩu");
+
+        btn6.setFont(DEFAULT_FONT);
+        btn6.setText("Đăng xuất");
+
+        if (username.equals("giaovu")) {
+            txtPermission.setText("Giáo vụ");
+            initSidePanelLayout();
+        } else {
+            txtPermission.setText(username);
+            initSidePanelLayoutStudent();
+        }
+
+        initBackgroundLayout();
+        initLayout();
+
+        setSize(new Dimension(1280, 768));
+        setLocationRelativeTo(null);
+
         javax.swing.GroupLayout btnMinimizeLayout = new javax.swing.GroupLayout(btnMinimize);
         btnMinimize.setLayout(btnMinimizeLayout);
         btnMinimizeLayout.setHorizontalGroup(
@@ -313,36 +407,6 @@ public class MainFrame extends RoundedJFrame {
                     .addComponent(txtProgramName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        sidePanel.setBackground(new Color(30, 34, 82));
-
-        spr1.setBackground(new Color(88, 102, 146));
-        spr1.setForeground(new Color(88, 102, 146));
-
-        btnClassroom.setFont(DEFAULT_FONT);
-        btnClassroom.setText("Sinh viên");
-
-        btnSchedule.setFont(DEFAULT_FONT);
-        btnSchedule.setText("Thời khóa biểu");
-
-        btnScores.setFont(DEFAULT_FONT);
-        btnScores.setText("Điểm số");
-
-        btnReExamination.setFont(DEFAULT_FONT);
-        btnReExamination.setText("Phúc khảo");
-
-        btnChangePassword.setFont(DEFAULT_FONT);
-        btnChangePassword.setText("Đổi mật khẩu");
-
-        btnLogOut.setFont(DEFAULT_FONT);
-        btnLogOut.setText("Đăng xuất");
-
-        initSidePanelLayout();
-        initBackgroundLayout();
-        initLayout();
-
-        setSize(new Dimension(1280, 768));
-        setLocationRelativeTo(null);
     }
 
     private void moveFrame(java.awt.event.MouseEvent evt) {
@@ -389,12 +453,12 @@ public class MainFrame extends RoundedJFrame {
     }
 
     private javax.swing.JPanel background;
-    private FlatButton btnClassroom;
-    private FlatButton btnSchedule;
-    private FlatButton btnScores;
-    private FlatButton btnReExamination;
-    private FlatButton btnChangePassword;
-    private FlatButton btnLogOut;
+    private FlatButton btn1;
+    private FlatButton btn2;
+    private FlatButton btn3;
+    private FlatButton btn4;
+    private FlatButton btn5;
+    private FlatButton btn6;
     private JLabel txtPermission;
     private JLabel txtProgramName;
     private javax.swing.JSeparator spr1;

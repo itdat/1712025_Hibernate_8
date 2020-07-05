@@ -27,6 +27,7 @@ public class SchedulePanel extends JPanel {
     private static final Font DEFAULT_FONT = new Font("Roboto", 0, 18);
     private static final Color PANEL_BACKGROUND_COLOR = new Color(88, 102, 146);
     private static final Vector<String> TABLE_HEADER = new Vector<String>(Arrays.asList("STT", "Mã môn", "Tên môn", "Phòng học"));
+    private static final Vector<String> TABLE_HEADER_STUDENT = new Vector<String>(Arrays.asList("STT", "Mã môn", "Tên môn", "Lớp", "Phòng học"));
 
     private DefaultTableModel dataModel = new DefaultTableModel();
     private JTable tblSchedule = new JTable(dataModel);
@@ -35,18 +36,30 @@ public class SchedulePanel extends JPanel {
     private FlatButton btnConfirm;
     private FlatButton btnCancel;
     private String classIDMain = "";
+    private boolean adminPermission = true;
+    private String username;
 
     private List<ClassSubject> subjectList = new ArrayList<>();
 
-    private SchedulePanel() {
+    private SchedulePanel(String username) {
+        this.username = username;
+        if (username.equals("giaovu")) {
+            this.adminPermission = true;
+        } else {
+            this.adminPermission = false;
+        }
         initComponents();
     }
 
-    public static SchedulePanel getInstance() {
+    public static SchedulePanel getInstance(String username) {
         if (instance == null) {
-            instance = new SchedulePanel();
+            instance = new SchedulePanel(username);
         }
         return instance;
+    }
+
+    public static void releaseInstance() {
+        instance = null;
     }
 
     private void initTable() {
@@ -71,6 +84,30 @@ public class SchedulePanel extends JPanel {
         }
     }
 
+    private void initTableStudent() {
+        tblSchedule.getColumnModel().getColumn(0).setPreferredWidth(120);
+        tblSchedule.getColumnModel().getColumn(1).setPreferredWidth(210);
+        tblSchedule.getColumnModel().getColumn(2).setPreferredWidth(470);
+        tblSchedule.getColumnModel().getColumn(3).setPreferredWidth(260);
+        tblSchedule.getColumnModel().getColumn(4).setPreferredWidth(260);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        tblSchedule.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tblSchedule.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        tblSchedule.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        tblSchedule.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        tblSchedule.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+
+        JTextField textField = new JTextField();
+        textField.setFont(DEFAULT_FONT);
+        textField.setHorizontalAlignment(SwingConstants.CENTER);
+        textField.setBorder(null);
+        DefaultCellEditor customCellEditor = new DefaultCellEditor(textField);
+        for (int i = 0; i < tblSchedule.getColumnCount(); i++) {
+            tblSchedule.getColumnModel().getColumn(i).setCellEditor(customCellEditor);
+        }
+    }
+
     private void updateTable() {
         List<ClassSubject> classSubjectList = SubjectDAO.getClassSubjects(edtSearch.getText());
 
@@ -83,8 +120,13 @@ public class SchedulePanel extends JPanel {
             record.add(classSubjectList.get(i).getRoom());
             table.add(record);
         }
-        tblSchedule.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
-        initTable();
+        tblSchedule.setModel(new javax.swing.table.DefaultTableModel(table, adminPermission?TABLE_HEADER:TABLE_HEADER_STUDENT));
+        if (adminPermission) {
+            initTable();
+        } else {
+            initTableStudent();
+        }
+
     }
     
     private void initComponents() {
@@ -112,6 +154,12 @@ public class SchedulePanel extends JPanel {
         btnConfirm.setVisible(false);
         btnCancel.setVisible(false);
 
+        if (!adminPermission) {
+            btnImportCSV.setVisible(false);
+            btnSearch.setVisible(false);
+            edtSearch.setVisible(false);
+        }
+
         tblSchedule = new javax.swing.JTable();
         tblSchedule.getTableHeader().setDefaultRenderer(new HeaderRenderer());
         tblSchedule.setFont(DEFAULT_FONT);
@@ -121,8 +169,27 @@ public class SchedulePanel extends JPanel {
         tblSchedule.setSelectionBackground(new Color(129, 150, 204));
         tblSchedule.setSelectionForeground(new Color(0, 0, 0));
         tblSchedule.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        tblSchedule.setModel(new javax.swing.table.DefaultTableModel(new Vector(), TABLE_HEADER));
-        initTable();
+
+        Vector table = new Vector();
+        if (!adminPermission) {
+            List<ClassSubject> classSubjectList = SubjectDAO.getClassSubjectsStudent(username);
+            for (int i = 0; i < classSubjectList.size(); i++) {
+                Vector record = new Vector();
+                record.add(String.valueOf(i+1));
+                record.add(classSubjectList.get(i).getId());
+                record.add(classSubjectList.get(i).getName());
+                record.add(classSubjectList.get(i).getClassID());
+                record.add(classSubjectList.get(i).getRoom());
+                table.add(record);
+            }
+        }
+
+        tblSchedule.setModel(new javax.swing.table.DefaultTableModel(table, adminPermission?TABLE_HEADER:TABLE_HEADER_STUDENT));
+        if (adminPermission) {
+            initTable();
+        } else {
+            initTableStudent();
+        }
 
         JScrollPane scrpnlTable = new JScrollPane();
         scrpnlTable.getVerticalScrollBar().setUI(new MyScrollbarUI());
@@ -179,14 +246,18 @@ public class SchedulePanel extends JPanel {
 
                 Vector table = csvImporter.getTable();
                 System.out.println(table);
-                dataModel.setDataVector(table,TABLE_HEADER);
+                dataModel.setDataVector(table,adminPermission?TABLE_HEADER:TABLE_HEADER_STUDENT);
 
                 edtSearch.setText(classIDMain);
                 btnSearch.setVisible(false);
                 btnConfirm.setVisible(true);
                 btnCancel.setVisible(true);
-                tblSchedule.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
-                initTable();
+                tblSchedule.setModel(new javax.swing.table.DefaultTableModel(table, adminPermission?TABLE_HEADER:TABLE_HEADER_STUDENT));
+                if (adminPermission) {
+                    initTable();
+                } else {
+                    initTableStudent();
+                }
             }
         });
 
@@ -209,8 +280,12 @@ public class SchedulePanel extends JPanel {
                     edtSearch.setText("");
                 }
 
-                tblSchedule.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
-                initTable();
+                tblSchedule.setModel(new javax.swing.table.DefaultTableModel(table, adminPermission?TABLE_HEADER:TABLE_HEADER_STUDENT));
+                if (adminPermission) {
+                    initTable();
+                } else {
+                    initTableStudent();
+                }
             }
         });
 
@@ -270,7 +345,7 @@ public class SchedulePanel extends JPanel {
 
         btnCancel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblSchedule.setModel(new javax.swing.table.DefaultTableModel(new Vector(), TABLE_HEADER));
+                tblSchedule.setModel(new javax.swing.table.DefaultTableModel(new Vector(), adminPermission?TABLE_HEADER:TABLE_HEADER_STUDENT));
                 edtSearch.setText("");
                 edtSearch.setEditable(true);
                 btnSearch.setVisible(true);

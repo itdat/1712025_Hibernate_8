@@ -333,8 +333,7 @@ public class Login extends RoundedJFrame {
             GiaoVuEntity gv = MinistryDAO.getMinistry();
             System.out.println(gv.getMatKhau());
             if (password.equals(gv.getMatKhau())) {
-                MainFrame mainFrame = new MainFrame();
-//                mainFrame.initComponents(ClassroomPanel.getInstance());
+                MainFrame mainFrame = new MainFrame("giaovu");
                 mainFrame.setVisible(true);
                 this.dispose();
             } else {
@@ -349,8 +348,8 @@ public class Login extends RoundedJFrame {
                     raiseError("Sai mật khẩu");
                 }
                 else {
-                    MainFrame mainFrame = new MainFrame();
-//                    mainFrame.initComponents(ClassroomPanel.getInstance());
+                    System.out.println(username);
+                    MainFrame mainFrame = new MainFrame(username);
                     mainFrame.setVisible(true);
                     this.dispose();
                 }

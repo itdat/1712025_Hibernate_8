@@ -90,6 +90,21 @@ public class SubjectDAO {
         return classSubjectList;
     }
 
+    public static List<ClassSubject> getClassSubjectsStudent(String studentID) {
+        Session session = HibernateUtilities.getSessionFactory().openSession();
+        List<ClassSubject> classSubjectList = null;
+        String hql = "SELECT new com.ntdat.hibernateproject.entities.compound.ClassSubject(mh.maMon, mh.tenMon, ctlh.phongHoc, ctlh.maLop) FROM MonHocEntity mh, ChiTietLopHocEntity ctlh, ChiTietMonHocEntity ctmh WHERE ctmh.mssv = '" + studentID + "' AND mh.maMon = ctlh.maMon AND ctmh.maMon = mh.maMon";
+        try {
+            Query query = session.createQuery(hql);
+            classSubjectList = query.list();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return classSubjectList;
+    }
+
     public static boolean addClassSubject(ClassSubject subject) {
         if (getSubject(subject.getId()) != null) return false;
         SubjectDAO.addSubject(new MonHocEntity(subject.getId(), subject.getName()));

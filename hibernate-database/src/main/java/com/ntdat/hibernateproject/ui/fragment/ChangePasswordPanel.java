@@ -38,6 +38,10 @@ public class ChangePasswordPanel extends JPanel {
         return instance;
     }
 
+    public static void releaseInstance() {
+        instance = null;
+    }
+
     private void initComponents() {
         setBackground(new Color(88, 102, 146));
         mainPanel = new javax.swing.JPanel();

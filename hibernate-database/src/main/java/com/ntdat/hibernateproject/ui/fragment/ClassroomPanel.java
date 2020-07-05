@@ -41,16 +41,22 @@ public class ClassroomPanel extends JPanel {
     private FlatButton btnCancel;
     
     private String classIDMain = "";
+    private boolean adminPermission = true;
 
-    private ClassroomPanel() {
+    private ClassroomPanel(boolean adminPermission) {
+        this.adminPermission = adminPermission;
         initComponents();
     }
 
-    public static ClassroomPanel getInstance() {
+    public static ClassroomPanel getInstance(boolean adminPermission) {
         if (instance == null) {
-            instance = new ClassroomPanel();
+            instance = new ClassroomPanel(adminPermission);
         }
         return instance;
+    }
+
+    public static void releaseInstance() {
+        instance = null;
     }
 
     private void initTable() {
@@ -123,6 +129,12 @@ public class ClassroomPanel extends JPanel {
         btnAddStudent.setVisible(false);
         btnConfirm.setVisible(false);
         btnCancel.setVisible(false);
+
+        if (!adminPermission) {
+            btnImportCSV.setVisible(false);
+            btnSearch.setVisible(false);
+            edtSearch.setVisible(false);
+        }
 
         tblClassroom = new javax.swing.JTable();
         tblClassroom.getTableHeader().setDefaultRenderer(new HeaderRenderer());

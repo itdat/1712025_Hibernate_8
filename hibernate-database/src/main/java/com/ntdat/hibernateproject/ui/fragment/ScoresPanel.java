@@ -14,6 +14,7 @@ import com.ntdat.hibernateproject.ui.customcomponent.HeaderRenderer;
 import com.ntdat.hibernateproject.ui.customcomponent.MyScrollbarUI;
 import com.ntdat.hibernateproject.utilities.CSVImporter;
 
+import javax.security.auth.Subject;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -29,6 +30,7 @@ public class ScoresPanel extends JPanel {
     private static final Font DEFAULT_FONT = new Font("Roboto", 0, 18);
     private static final Color PANEL_BACKGROUND_COLOR = new Color(88, 102, 146);
     private static final Vector<String> TABLE_HEADER = new Vector<String>(Arrays.asList("STT", "MSSV", "Họ và tên", "Điểm GK", "Điểm CK", "Điểm khác", "Điểm tổng"));
+    private static final Vector<String> TABLE_HEADER_STUDENT = new Vector<String>(Arrays.asList("STT", "Mã môn", "Tên môn", "Điểm GK", "Điểm CK", "Điểm khác", "Điểm tổng"));
 
     private JScrollPane scrpnlTable;
     private DefaultTableModel dataModel = new DefaultTableModel();
@@ -39,18 +41,31 @@ public class ScoresPanel extends JPanel {
     private FlatButton btnConfirm;
     private FlatButton btnCancel;
 
+    private boolean adminPermission = true;
+    private String username;
+
     private String classIDMain = "";
     private List<ChiTietMonHocEntity> subjectDetailList = new ArrayList<>();
 
-    private ScoresPanel() {
+    private ScoresPanel(String username) {
+        this.username = username;
+        if (username.equals("giaovu")) {
+            this.adminPermission = true;
+        } else {
+            this.adminPermission = false;
+        }
         initComponents();
     }
 
-    public static ScoresPanel getInstance() {
+    public static ScoresPanel getInstance(String username) {
         if (instance == null) {
-            instance = new ScoresPanel();
+            instance = new ScoresPanel(username);
         }
         return instance;
+    }
+
+    public static void releaseInstance() {
+        instance = null;
     }
 
     private void initTable() {
@@ -97,7 +112,7 @@ public class ScoresPanel extends JPanel {
 
             table.add(record);
         }
-        tblScores.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
+        tblScores.setModel(new javax.swing.table.DefaultTableModel(table, adminPermission?TABLE_HEADER:TABLE_HEADER_STUDENT));
         initTable();
     }
 
@@ -126,6 +141,12 @@ public class ScoresPanel extends JPanel {
         btnConfirm.setVisible(false);
         btnCancel.setVisible(false);
 
+        if (!adminPermission) {
+            btnImportCSV.setVisible(false);
+            btnSearch.setVisible(false);
+            edtSearch.setVisible(false);
+        }
+
         tblScores = new javax.swing.JTable();
         tblScores.getTableHeader().setDefaultRenderer(new HeaderRenderer());
         tblScores.setFont(DEFAULT_FONT);
@@ -135,7 +156,24 @@ public class ScoresPanel extends JPanel {
         tblScores.setSelectionBackground(new Color(129, 150, 204));
         tblScores.setSelectionForeground(Color.BLACK);
         tblScores.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        tblScores.setModel(new javax.swing.table.DefaultTableModel(new Vector(), TABLE_HEADER));
+
+        Vector table = new Vector();
+        if (!adminPermission) {
+            List<ChiTietMonHocEntity> chiTietMonHocEntityList = SubjectDetailDAO.getSubjectDetailsStudent(username);
+            for (int i = 0; i < chiTietMonHocEntityList.size(); i++) {
+                Vector record = new Vector();
+                record.add(String.valueOf(i+1));
+                record.add(chiTietMonHocEntityList.get(i).getMaMon());
+                record.add(SubjectDAO.getSubject(chiTietMonHocEntityList.get(i).getMaMon()).getTenMon());
+                record.add(chiTietMonHocEntityList.get(i).getDiemGk());
+                record.add(chiTietMonHocEntityList.get(i).getDiemCk());
+                record.add(chiTietMonHocEntityList.get(i).getDiemKhac());
+                record.add(chiTietMonHocEntityList.get(i).getDiemTong());
+                table.add(record);
+            }
+        }
+
+        tblScores.setModel(new javax.swing.table.DefaultTableModel(table, adminPermission?TABLE_HEADER:TABLE_HEADER_STUDENT));
         initTable();
 
         scrpnlTable = new javax.swing.JScrollPane();
@@ -202,7 +240,7 @@ public class ScoresPanel extends JPanel {
                     record.add(subjectDetailList.get(i).getDiemTong());
                     table.add(record);
                 }
-                tblScores.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
+                tblScores.setModel(new javax.swing.table.DefaultTableModel(table, adminPermission?TABLE_HEADER:TABLE_HEADER_STUDENT));
                 initTable();
             }
         });
@@ -216,13 +254,13 @@ public class ScoresPanel extends JPanel {
 
                 Vector table = csvImporter.getTable();
                 System.out.println(table);
-                dataModel.setDataVector(table,TABLE_HEADER);
+                dataModel.setDataVector(table,adminPermission?TABLE_HEADER:TABLE_HEADER_STUDENT);
 
                 edtSearch.setText(classIDMain);
                 btnSearch.setVisible(false);
                 btnConfirm.setVisible(true);
                 btnCancel.setVisible(true);
-                tblScores.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
+                tblScores.setModel(new javax.swing.table.DefaultTableModel(table, adminPermission?TABLE_HEADER:TABLE_HEADER_STUDENT));
                 initTable();
             }
         });
