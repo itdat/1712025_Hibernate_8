@@ -1,13 +1,15 @@
 package com.ntdat.hibernateproject.ui.fragment;
 
-import com.ntdat.hibernateproject.dao.StudentDAO;
-import com.ntdat.hibernateproject.dao.SubjectDAO;
+import com.ntdat.hibernateproject.dao.*;
+import com.ntdat.hibernateproject.entities.ChiTietMonHocEntity;
 import com.ntdat.hibernateproject.entities.SinhVienEntity;
+import com.ntdat.hibernateproject.entities.TaiKhoanEntity;
 import com.ntdat.hibernateproject.entities.compound.ClassSubject;
 import com.ntdat.hibernateproject.ui.customcomponent.FlatButton;
 import com.ntdat.hibernateproject.ui.customcomponent.FlatTextInput;
 import com.ntdat.hibernateproject.ui.customcomponent.HeaderRenderer;
 import com.ntdat.hibernateproject.ui.customcomponent.MyScrollbarUI;
+import com.ntdat.hibernateproject.utilities.CSVImporter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -26,7 +28,8 @@ public class SchedulePanel extends JPanel {
     private static final Color PANEL_BACKGROUND_COLOR = new Color(88, 102, 146);
     private static final Vector<String> TABLE_HEADER = new Vector<String>(Arrays.asList("STT", "Mã môn", "Tên môn", "Phòng học"));
 
-    private JTable tblSchedule;
+    private DefaultTableModel dataModel = new DefaultTableModel();
+    private JTable tblSchedule = new JTable(dataModel);
     private FlatTextInput edtSearch;
     private FlatButton btnSearch;
     private FlatButton btnConfirm;
@@ -57,6 +60,31 @@ public class SchedulePanel extends JPanel {
         tblSchedule.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
         tblSchedule.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
         tblSchedule.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+
+        JTextField textField = new JTextField();
+        textField.setFont(DEFAULT_FONT);
+        textField.setHorizontalAlignment(SwingConstants.CENTER);
+        textField.setBorder(null);
+        DefaultCellEditor customCellEditor = new DefaultCellEditor(textField);
+        for (int i = 0; i < tblSchedule.getColumnCount(); i++) {
+            tblSchedule.getColumnModel().getColumn(i).setCellEditor(customCellEditor);
+        }
+    }
+
+    private void updateTable() {
+        List<ClassSubject> classSubjectList = SubjectDAO.getClassSubjects(edtSearch.getText());
+
+        Vector table = new Vector();
+        for (int i = 0; i < classSubjectList.size(); i++) {
+            Vector record = new Vector();
+            record.add(String.valueOf(i+1));
+            record.add(classSubjectList.get(i).getId());
+            record.add(classSubjectList.get(i).getName());
+            record.add(classSubjectList.get(i).getRoom());
+            table.add(record);
+        }
+        tblSchedule.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
+        initTable();
     }
     
     private void initComponents() {
@@ -144,40 +172,55 @@ public class SchedulePanel extends JPanel {
         
         btnImportCSV.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JFileChooser jFileChooser = new JFileChooser();
-                jFileChooser.showDialog(getParent(), "Chọn");
-                File selectedFile = jFileChooser.getSelectedFile();
-                String[] fileComponents = selectedFile.getAbsolutePath().split("\\\\");
-                classIDMain = fileComponents[fileComponents.length - 1].replace(".csv", "");
+//                JFileChooser jFileChooser = new JFileChooser();
+//                jFileChooser.showDialog(getParent(), "Chọn");
+//                File selectedFile = jFileChooser.getSelectedFile();
+//                String[] fileComponents = selectedFile.getAbsolutePath().split("\\\\");
+//                classIDMain = fileComponents[fileComponents.length - 1].replace(".csv", "");
+//                edtSearch.setText(classIDMain);
+//                Vector table = new Vector();
+//                try {
+//                    BufferedReader bufferedReader = new BufferedReader(new FileReader(selectedFile));
+//                    table = new Vector();
+//                    String line;
+//                    while (true) {
+//                        line = bufferedReader.readLine();
+//                        String[] tokens = line.split(",");
+//                        Vector record = new Vector();
+//                        for (String token : tokens) {
+//                            record.add(token);
+//                        }
+//                        table.add(record);
+//                        ClassSubject classSubject = new ClassSubject(record.get(1).toString(), record.get(2).toString(), record.get(3).toString(), classIDMain);
+//                        subjectList.add(classSubject);
+//                    }
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } finally {
+//                    edtSearch.setEditable(false);
+//                    btnSearch.setVisible(false);
+//                    btnConfirm.setVisible(true);
+//                    btnCancel.setVisible(true);
+//                    tblSchedule.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
+//                    initTable();
+//                }
+                CSVImporter csvImporter = new CSVImporter();
+                csvImporter.importCSV(getParent());
+                if (csvImporter.getFileName() == null) return;
+                classIDMain = csvImporter.getFileName();
+
+                Vector table = csvImporter.getTable();
+                System.out.println(table);
+                dataModel.setDataVector(table,TABLE_HEADER);
+
                 edtSearch.setText(classIDMain);
-                Vector table = new Vector();
-                try {
-                    BufferedReader bufferedReader = new BufferedReader(new FileReader(selectedFile));
-                    table = new Vector();
-                    String line;
-                    while (true) {
-                        line = bufferedReader.readLine();
-                        String[] tokens = line.split(",");
-                        Vector record = new Vector();
-                        for (String token : tokens) {
-                            record.add(token);
-                        }
-                        table.add(record);
-                        ClassSubject classSubject = new ClassSubject(record.get(1).toString(), record.get(2).toString(), record.get(3).toString(), classIDMain);
-                        subjectList.add(classSubject);
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    edtSearch.setEditable(false);
-                    btnSearch.setVisible(false);
-                    btnConfirm.setVisible(true);
-                    btnCancel.setVisible(true);
-                    tblSchedule.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
-                    initTable();
-                }
+                btnSearch.setVisible(false);
+                btnConfirm.setVisible(true);
+                btnCancel.setVisible(true);
+                tblSchedule.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
+                initTable();
             }
         });
 
@@ -194,6 +237,12 @@ public class SchedulePanel extends JPanel {
                     record.add(classSubjectList.get(i).getRoom());
                     table.add(record);
                 }
+
+                if (classSubjectList.size() == 0) {
+                    JOptionPane.showMessageDialog(getParent(), "Thời khóa biểu lớp học không tồn tại. Vui lòng nhập từ file csv.", "Không tìm thấy thời khóa biểu", JOptionPane.INFORMATION_MESSAGE);
+                    edtSearch.setText("");
+                }
+
                 tblSchedule.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
                 initTable();
             }
@@ -201,15 +250,64 @@ public class SchedulePanel extends JPanel {
 
         btnConfirm.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                for (ClassSubject subject : subjectList) {
-                    SubjectDAO.addClassSubject(subject);
+//                for (ClassSubject subject : subjectList) {
+//                    SubjectDAO.addClassSubject(subject);
+//                }
+//                tblSchedule.setModel(new javax.swing.table.DefaultTableModel(new Vector(), TABLE_HEADER));
+//                edtSearch.setText("");
+//                edtSearch.setEditable(true);
+//                btnSearch.setVisible(true);
+//                btnConfirm.setVisible(false);
+//                btnCancel.setVisible(false);
+                if (tblSchedule.isEditing())
+                    tblSchedule.getCellEditor().stopCellEditing();
+
+                classIDMain = edtSearch.getText();
+                if (SubjectDAO.getClassSubjects(classIDMain).size() != 0) {
+                    edtSearch.setEditable(true);
+                    btnSearch.setVisible(true);
+                    btnConfirm.setVisible(false);
+                    btnCancel.setVisible(false);
+                    updateTable();
+                    JOptionPane.showMessageDialog(getParent(), "Thời khóa biểu đã tồn tại", "Nhập file thất bại", JOptionPane.INFORMATION_MESSAGE);
+                    return;
                 }
-                tblSchedule.setModel(new javax.swing.table.DefaultTableModel(new Vector(), TABLE_HEADER));
-                edtSearch.setText("");
+
+                if (ClassroomDAO.getClassroom(classIDMain) == null) {
+                    edtSearch.setEditable(true);
+                    btnSearch.setVisible(true);
+                    btnConfirm.setVisible(false);
+                    btnCancel.setVisible(false);
+                    updateTable();
+                    JOptionPane.showMessageDialog(getParent(), "Lớp học không tồn tại", "Nhập file thất bại", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+
+                int total = dataModel.getRowCount();
+
+                for (int i = 0; i < dataModel.getDataVector().size(); i++) {
+                    Vector<String> record = (Vector<String>) dataModel.getDataVector().get(i);
+                    record.remove(0);
+                    record.add(classIDMain);
+                    System.out.println(record);
+
+                    ClassSubject classSubject = new ClassSubject(record);
+                    SubjectDAO.addClassSubject(classSubject);
+                    List<SinhVienEntity> sinhVienEntityList = StudentDAO.getStudents(classIDMain);
+                    for (SinhVienEntity sv : sinhVienEntityList) {
+                        SubjectDetailDAO.addSubjectDetail(new ChiTietMonHocEntity(classIDMain, classSubject.getId(), sv.getMssv(), null, null, null, null));
+                    }
+                }
+
                 edtSearch.setEditable(true);
                 btnSearch.setVisible(true);
                 btnConfirm.setVisible(false);
                 btnCancel.setVisible(false);
+
+                // Update table
+                updateTable();
+
+                JOptionPane.showMessageDialog(getParent(), "Nhập thành công thời khóa biểu lớp " + classIDMain + ".", "Nhập file hoàn tất", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 

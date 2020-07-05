@@ -6,6 +6,9 @@
 package com.ntdat.hibernateproject.ui.dialog;
 
 import com.ntdat.hibernateproject.dao.StudentDAO;
+import com.ntdat.hibernateproject.dao.SubjectDAO;
+import com.ntdat.hibernateproject.dao.SubjectDetailDAO;
+import com.ntdat.hibernateproject.entities.ChiTietMonHocEntity;
 import com.ntdat.hibernateproject.entities.SinhVienEntity;
 import com.ntdat.hibernateproject.ui.customcomponent.FlatButton;
 import com.ntdat.hibernateproject.ui.customcomponent.FlatTextInput;
@@ -21,13 +24,14 @@ public class AddStudentDialog extends RoundedPanel {
 
     public AddStudentDialog(int radius, String classID) {
         super(radius);
-        this.classID = classID;
+        this.classIDMain = classID;
         initComponents();
     }
 
-    private String classID;
+    private String classIDMain;
     private String sex = "Nam";
-    
+    private boolean addToDefaultClass = true;
+
     private void initComponents() {
         txtStudentId = new javax.swing.JLabel();
         txtStudentId.setText("MSSV");
@@ -55,14 +59,77 @@ public class AddStudentDialog extends RoundedPanel {
         btnCancel = new FlatButton();
         btnCancel.setText("Hủy");
 
+        if (classIDMain.contains("-")) {
+            edtFullName.setEditable(false);
+            edtId.setEditable(false);
+            addToDefaultClass = false;
+        }
+
+        edtStudentId.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                SinhVienEntity sv = StudentDAO.getStudent(edtStudentId.getText());
+                if (sv != null) {
+                    edtFullName.setText(sv.getHoVaTen());
+                    edtId.setText(sv.getCmnd());
+                    if (sv.getGioiTinh().equals("Nam")) {
+                        btnMale.setColors(MOUSE_HOVER_BUTTON, MOUSE_PRESS_BUTTON, MOUSE_PRESS_BUTTON);
+                        btnMale.repaint();
+                        btnFemale.setColors(MOUSE_HOVER_BUTTON, MOUSE_PRESS_BUTTON, DEFAULT_BUTTON);
+                        btnFemale.repaint();
+                    } else {
+                        btnMale.setColors(MOUSE_HOVER_BUTTON, MOUSE_PRESS_BUTTON, DEFAULT_BUTTON);
+                        btnMale.repaint();
+                        btnFemale.setColors(MOUSE_HOVER_BUTTON, MOUSE_PRESS_BUTTON, MOUSE_PRESS_BUTTON);
+                        btnFemale.repaint();
+                    }
+                }
+            }
+        });
+
+        btnMale.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (addToDefaultClass) {
+                    sex = "Nam";
+                    btnMale.setColors(MOUSE_HOVER_BUTTON, MOUSE_PRESS_BUTTON, MOUSE_PRESS_BUTTON);
+                    btnMale.repaint();
+                    btnFemale.setColors(MOUSE_HOVER_BUTTON, MOUSE_PRESS_BUTTON, DEFAULT_BUTTON);
+                    btnFemale.repaint();
+                }
+            }
+        });
+        btnFemale.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (addToDefaultClass) {
+                    sex = "Nu";
+                    btnMale.setColors(MOUSE_HOVER_BUTTON, MOUSE_PRESS_BUTTON, DEFAULT_BUTTON);
+                    btnMale.repaint();
+                    btnFemale.setColors(MOUSE_HOVER_BUTTON, MOUSE_PRESS_BUTTON, MOUSE_PRESS_BUTTON);
+                    btnFemale.repaint();
+                }
+            }
+        });
 
         btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (StudentDAO.addStudent(new SinhVienEntity(edtStudentId.getText(), edtFullName.getText(), sex, edtId.getText(), classID))) {
-                    JOptionPane.showMessageDialog(getParent(), "Thêm thành công sinh viên " + edtFullName.getText(), "Thêm sinh viên thành công", JOptionPane.INFORMATION_MESSAGE);
-                    JOptionPane.getRootFrame().dispose();
+                if (classIDMain.contains("-")) {
+                    String classID = "", subjectID = "";
+                    String[] token = classIDMain.split("-");
+                    classID = token[0];
+                    subjectID = token[1];
+
+                    if (SubjectDetailDAO.addSubjectDetail(new ChiTietMonHocEntity(classID, subjectID, edtStudentId.getText(), null, null, null, null))) {
+                        JOptionPane.showMessageDialog(getParent(), "Thêm thành công sinh viên " + edtFullName.getText(), "Thêm sinh viên thành công", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.getRootFrame().dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(getParent(), "Thông tin sinh viên không chính xác. Vui lòng nhập lại", "Thêm sinh viên thất bại", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(getParent(), "Thông tin sinh viên không chính xác. Vui lòng nhập lại", "Thêm sinh viên thất bại", JOptionPane.INFORMATION_MESSAGE);
+                    if (StudentDAO.addStudent(new SinhVienEntity(edtStudentId.getText(), edtFullName.getText(), sex, edtId.getText(), classIDMain))) {
+                        JOptionPane.showMessageDialog(getParent(), "Thêm thành công sinh viên " + edtFullName.getText(), "Thêm sinh viên thành công", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.getRootFrame().dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(getParent(), "Thông tin sinh viên không chính xác. Vui lòng nhập lại", "Thêm sinh viên thất bại", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
             }
         });

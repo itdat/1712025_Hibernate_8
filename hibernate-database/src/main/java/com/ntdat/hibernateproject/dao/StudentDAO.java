@@ -57,7 +57,7 @@ public class StudentDAO {
         System.out.println(classID + " " + subjectID);
 
         if (!subjectID.equals("")) {
-            hql = "SELECT new SinhVienEntity(sv.mssv,sv.hoVaTen,sv.gioiTinh, sv.cmnd, sv.maLop) FROM SinhVienEntity sv, ChiTietMonHocEntity ctmh WHERE sv.mssv = ctmh.mssv AND sv.maLop = '"+ classID + "' AND ctmh.maMon ='"+ subjectID +"'";
+            hql = "SELECT new SinhVienEntity(sv.mssv,sv.hoVaTen,sv.gioiTinh, sv.cmnd, sv.maLop) FROM SinhVienEntity sv, ChiTietMonHocEntity ctmh WHERE sv.mssv = ctmh.mssv AND ctmh.maLop = '"+ classID + "' AND ctmh.maMon ='"+ subjectID +"'";
         }
         try {
             Query query = session.createQuery(hql);

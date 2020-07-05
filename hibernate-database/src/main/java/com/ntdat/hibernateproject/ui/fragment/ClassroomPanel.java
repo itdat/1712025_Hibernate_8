@@ -3,6 +3,8 @@ package com.ntdat.hibernateproject.ui.fragment;
 import com.ntdat.hibernateproject.dao.AccountDAO;
 import com.ntdat.hibernateproject.dao.ClassroomDAO;
 import com.ntdat.hibernateproject.dao.StudentDAO;
+import com.ntdat.hibernateproject.dao.SubjectDetailDAO;
+import com.ntdat.hibernateproject.entities.ChiTietMonHocEntityPK;
 import com.ntdat.hibernateproject.entities.SinhVienEntity;
 import com.ntdat.hibernateproject.entities.TaiKhoanEntity;
 import com.ntdat.hibernateproject.ui.customcomponent.*;
@@ -10,6 +12,8 @@ import com.ntdat.hibernateproject.ui.dialog.AddStudentDialog;
 import com.ntdat.hibernateproject.utilities.CSVImporter;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -26,6 +30,8 @@ public class ClassroomPanel extends JPanel {
     private static final Vector<String> TABLE_HEADER = new Vector<String>(Arrays.asList("STT", "MSSV", "Họ và tên", "Giới tính", "CMND"));
 
     private DefaultTableModel dataModel = new DefaultTableModel();
+
+    private boolean isDelete = false;
 
     private JTable tblClassroom = new JTable(dataModel);
     private FlatTextInput edtSearch;
@@ -72,6 +78,7 @@ public class ClassroomPanel extends JPanel {
     }
 
     private void updateTable() {
+        tblClassroom.getSelectionModel().clearSelection();
         List<SinhVienEntity> sinhVienEntityList = StudentDAO.getStudents(edtSearch.getText());
 
         Vector table = new Vector();
@@ -180,8 +187,21 @@ public class ClassroomPanel extends JPanel {
 
         // EVENT LISTENERS
 
+        tblClassroom.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                classIDMain = edtSearch.getText();
+                if (classIDMain.contains("-")) {
+                    isDelete = true;
+                    btnConfirm.setText("Xóa sinh viên");
+                    btnConfirm.setVisible(true);
+                }
+            }
+        });
+
         btnSearch.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnConfirm.setVisible(false);
                 String classID = edtSearch.getText();
                 List<SinhVienEntity> sinhVienEntityList = StudentDAO.getStudents(classID);
 
@@ -222,7 +242,9 @@ public class ClassroomPanel extends JPanel {
 
                 edtSearch.setText(classIDMain);
                 btnSearch.setVisible(false);
+                btnConfirm.setText("Xác nhận");
                 btnConfirm.setVisible(true);
+                isDelete = false;
                 btnCancel.setVisible(true);
                 tblClassroom.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
                 initTable();
@@ -239,6 +261,32 @@ public class ClassroomPanel extends JPanel {
 
         btnConfirm.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (isDelete) {
+                    classIDMain = edtSearch.getText();
+                    String classID = "", subjectID = "";
+                    if (classIDMain.contains("-")) {
+                        String[] token = classIDMain.split("-");
+                        classID = token[0];
+                        subjectID = token[1];
+                    }
+
+
+                    int input = JOptionPane.showConfirmDialog(getParent(), "Bạn có chắc muốn xóa sinh viên " + tblClassroom.getValueAt(tblClassroom.getSelectedRow(), 2) + " khỏi lớp?", "Xác nhận xóa sinh viên", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
+                    if (input == 0) {
+                        if (SubjectDetailDAO.deleteSubjectDetail(SubjectDetailDAO.getSubjectDetail(new ChiTietMonHocEntityPK(classID, subjectID, tblClassroom.getValueAt(tblClassroom.getSelectedRow(), 1).toString())))) {
+                            JOptionPane.showMessageDialog(getParent(), "Đã xóa sinh viên khỏi lớp.", "Xóa thành công", JOptionPane.INFORMATION_MESSAGE);
+                            updateTable();
+
+                            btnConfirm.setText("Xác nhận");
+                            btnConfirm.setVisible(false);
+                            isDelete = false;
+                        } else {
+                            JOptionPane.showMessageDialog(getParent(), "Không thể xóa sinh viên khỏi lớp.", "Xóa không thành công", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                    return;
+                }
+
                 if (tblClassroom.isEditing())
                     tblClassroom.getCellEditor().stopCellEditing();
 
