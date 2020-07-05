@@ -1,5 +1,7 @@
 package com.ntdat.hibernateproject.ui.fragment;
 
+import com.ntdat.hibernateproject.dao.AccountDAO;
+import com.ntdat.hibernateproject.entities.TaiKhoanEntity;
 import com.ntdat.hibernateproject.ui.customcomponent.FlatButton;
 import com.ntdat.hibernateproject.ui.customcomponent.FlatPasswordInput;
 import com.ntdat.hibernateproject.ui.customcomponent.FlatTextInput;
@@ -27,13 +29,22 @@ public class ChangePasswordPanel extends JPanel {
     private JLabel txtConfirmPassword;
     private FlatPasswordInput edtConfirmPassword;
 
-    private ChangePasswordPanel() {
+    private boolean adminPermission = true;
+    private String username;
+
+    private ChangePasswordPanel(String username) {
+        this.username = username;
+        if (username.equals("giaovu")) {
+            this.adminPermission = true;
+        } else {
+            this.adminPermission = false;
+        }
         initComponents();
     }
 
-    public static ChangePasswordPanel getInstance() {
+    public static ChangePasswordPanel getInstance(String username) {
         if (instance == null) {
-            instance = new ChangePasswordPanel();
+            instance = new ChangePasswordPanel(username);
         }
         return instance;
     }
@@ -100,6 +111,26 @@ public class ChangePasswordPanel extends JPanel {
 
         txtConfirmPassword.setFont(DEFAULT_FONT);
         txtConfirmPassword.setText("Xác nhận mật khẩu");
+
+        btnChangePassword.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TaiKhoanEntity tk = AccountDAO.getAccount(username);
+                if (!edtPassword.getText().equals(tk.getMatKhau())) {
+                    JOptionPane.showMessageDialog(getParent(), "Vui lòng nhập lại mật khẩu hiện tại.", "Nhập sai mật khẩu", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    if (!edtNewPassword.getText().equals(edtConfirmPassword.getText())) {
+                        JOptionPane.showMessageDialog(getParent(), "Vui lòng nhập lại mật khẩu xác nhận", "Mật khẩu xác nhận không khớp", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        tk.setMatKhau(edtNewPassword.getText());
+                        if (AccountDAO.updateAccount(tk)) {
+                            JOptionPane.showMessageDialog(getParent(), "Đã đổi mật khẩu thành công.", "Đổi mật khẩu thành công", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(getParent(), "Có lỗi xảy ra. Vui lòng thử lại sau.", "Đổi mật khẩu thất bại", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                }
+            }
+        });
 
         javax.swing.GroupLayout loginFormLayout = new javax.swing.GroupLayout(pnlForm);
         pnlForm.setLayout(loginFormLayout);

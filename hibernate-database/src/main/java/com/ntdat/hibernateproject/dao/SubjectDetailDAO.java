@@ -64,6 +64,16 @@ public class SubjectDetailDAO {
         return chiTietMonHocEntityList;
     }
 
+    public static ChiTietMonHocEntity getSubjectDetailStudent(String studentID, String subjectID, String classID) {
+        List<ChiTietMonHocEntity> chiTietMonHocEntityList = getSubjectDetailsStudent(studentID);
+        for (ChiTietMonHocEntity chiTietMonHocEntity : chiTietMonHocEntityList) {
+            if (chiTietMonHocEntity.getMaMon().equals(subjectID) && chiTietMonHocEntity.getMaLop().equals(classID)) {
+                return chiTietMonHocEntity;
+            }
+        }
+        return null;
+    }
+
     public static List<ChiTietMonHocEntity> getSubjectDetailsStudent(String studentID) {
         Session session = HibernateUtilities.getSessionFactory().openSession();
         List<ChiTietMonHocEntity> chiTietMonHocEntityList = null;

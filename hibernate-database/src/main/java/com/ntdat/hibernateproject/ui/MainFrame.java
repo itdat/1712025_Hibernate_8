@@ -234,7 +234,7 @@ public class MainFrame extends RoundedJFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 setActive(btn4);
                 background.removeAll();
-                pnlMain = ReExaminationPanel.getInstance();
+                pnlMain = ReExaminationPanel.getInstance(username);
                 initBackgroundLayout();
                 pnlMain.revalidate();
                 pnlMain.repaint();
@@ -244,7 +244,7 @@ public class MainFrame extends RoundedJFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 setActive(btn5);
                 background.removeAll();
-                pnlMain = ChangePasswordPanel.getInstance();
+                pnlMain = ChangePasswordPanel.getInstance(username);
                 initBackgroundLayout();
                 pnlMain.revalidate();
                 pnlMain.repaint();

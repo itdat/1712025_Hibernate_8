@@ -40,4 +40,23 @@ public class AccountDAO {
         }
         return true;
     }
+
+    public static boolean updateAccount(TaiKhoanEntity account) {
+        if (AccountDAO.getAccount(account.getTaiKhoan()) == null) return false;
+
+        Session session = HibernateUtilities.getSessionFactory().openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.update(account);
+            transaction.commit();
+        } catch (PersistenceException e) {
+            transaction.rollback();
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+        return true;
+    }
 }

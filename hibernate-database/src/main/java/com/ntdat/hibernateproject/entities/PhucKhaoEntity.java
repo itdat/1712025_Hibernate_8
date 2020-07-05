@@ -14,6 +14,17 @@ public class PhucKhaoEntity {
     private String liDo;
     private String tinhTrang;
 
+    public PhucKhaoEntity() {}
+
+    public PhucKhaoEntity(String mssv, String maMon, String cotDiem, double diemMongMuon, String liDo, String tinhTrang) {
+        this.mssv = mssv;
+        this.maMon = maMon;
+        this.cotDiem = cotDiem;
+        this.diemMongMuon = diemMongMuon;
+        this.liDo = liDo;
+        this.tinhTrang = tinhTrang;
+    }
+
     @Id
     @Column(name = "MSSV")
     public String getMssv() {

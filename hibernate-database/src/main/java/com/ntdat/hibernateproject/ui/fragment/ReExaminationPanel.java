@@ -3,10 +3,13 @@ package com.ntdat.hibernateproject.ui.fragment;
 import com.ntdat.hibernateproject.dao.ReExaminationDAO;
 import com.ntdat.hibernateproject.dao.StudentDAO;
 import com.ntdat.hibernateproject.dao.SubjectDAO;
+import com.ntdat.hibernateproject.dao.SubjectDetailDAO;
 import com.ntdat.hibernateproject.entities.MonHocEntity;
 import com.ntdat.hibernateproject.entities.PhucKhaoEntity;
 import com.ntdat.hibernateproject.entities.SinhVienEntity;
+import com.ntdat.hibernateproject.entities.compound.ClassSubject;
 import com.ntdat.hibernateproject.ui.customcomponent.*;
+import com.ntdat.hibernateproject.utilities.CSVImporter;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -26,8 +29,12 @@ public class ReExaminationPanel extends JPanel {
     private static final Font DEFAULT_FONT = new Font("Roboto", 0, 18);
     private static final Color PANEL_BACKGROUND_COLOR = new Color(88, 102, 146);
     private static final Vector<String> TABLE_HEADER = new Vector<String>(Arrays.asList("STT", "MSSV", "Họ và tên", "Môn phúc khảo", "Tình trạng"));
+    private static final Vector<String> TABLE_HEADER_STUDENT = new Vector<String>(Arrays.asList("STT", "Mã môn", "Tên môn", "Lớp"));
 
-    private JTable tblRequests;
+
+    private DefaultTableModel dataModel = new DefaultTableModel();
+    private JTable tblRequests = new JTable(dataModel);
+    private FlatButton btnUpdate;
     private FlatButton btnSearch;
     private FlatButton btnConfirm;
     private FlatButton btnCancel;
@@ -54,13 +61,22 @@ public class ReExaminationPanel extends JPanel {
     private FlatTextArea txaReason;
     private FlatTextInput edtSearch;
 
-    private ReExaminationPanel() {
+    private boolean adminPermission = true;
+    private String username;
+
+    private ReExaminationPanel(String username) {
+        this.username = username;
+        if (username.equals("giaovu")) {
+            this.adminPermission = true;
+        } else {
+            this.adminPermission = false;
+        }
         initComponents();
     }
 
-    public static ReExaminationPanel getInstance() {
+    public static ReExaminationPanel getInstance(String username) {
         if (instance == null) {
-            instance = new ReExaminationPanel();
+            instance = new ReExaminationPanel(username);
         }
         return instance;
     }
@@ -69,11 +85,78 @@ public class ReExaminationPanel extends JPanel {
         instance = null;
     }
 
+
+    private void initTable() {
+        tblRequests.getColumnModel().getColumn(0).setPreferredWidth(85);
+        tblRequests.getColumnModel().getColumn(1).setPreferredWidth(130);
+        tblRequests.getColumnModel().getColumn(2).setPreferredWidth(200);
+        tblRequests.getColumnModel().getColumn(3).setPreferredWidth(210);
+        tblRequests.getColumnModel().getColumn(4).setPreferredWidth(180);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        tblRequests.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tblRequests.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        tblRequests.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        tblRequests.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        tblRequests.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+
+        JTextField textField = new JTextField();
+        textField.setFont(DEFAULT_FONT);
+        textField.setHorizontalAlignment(SwingConstants.CENTER);
+        textField.setBorder(null);
+        DefaultCellEditor customCellEditor = new DefaultCellEditor(textField);
+        for (int i = 0; i < tblRequests.getColumnCount(); i++) {
+            tblRequests.getColumnModel().getColumn(i).setCellEditor(customCellEditor);
+        }
+    }
+
+    private void initTableStudent() {
+        tblRequests.getColumnModel().getColumn(0).setPreferredWidth(85);
+        tblRequests.getColumnModel().getColumn(1).setPreferredWidth(210);
+        tblRequests.getColumnModel().getColumn(2).setPreferredWidth(210);
+        tblRequests.getColumnModel().getColumn(3).setPreferredWidth(180);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        tblRequests.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tblRequests.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        tblRequests.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        tblRequests.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+
+        JTextField textField = new JTextField();
+        textField.setFont(DEFAULT_FONT);
+        textField.setHorizontalAlignment(SwingConstants.CENTER);
+        textField.setBorder(null);
+        DefaultCellEditor customCellEditor = new DefaultCellEditor(textField);
+        for (int i = 0; i < tblRequests.getColumnCount(); i++) {
+            tblRequests.getColumnModel().getColumn(i).setCellEditor(customCellEditor);
+        }
+    }
+
+    private void updateTable() {
+        List<ClassSubject> classSubjectList = SubjectDAO.getClassSubjects(edtSearch.getText());
+
+        Vector table = new Vector();
+        for (int i = 0; i < classSubjectList.size(); i++) {
+            Vector record = new Vector();
+            record.add(String.valueOf(i+1));
+            record.add(classSubjectList.get(i).getId());
+            record.add(classSubjectList.get(i).getName());
+            record.add(classSubjectList.get(i).getRoom());
+            table.add(record);
+        }
+        tblRequests.setModel(new javax.swing.table.DefaultTableModel(table, adminPermission?TABLE_HEADER:TABLE_HEADER_STUDENT));
+        if (adminPermission) {
+            initTable();
+        } else {
+            initTableStudent();
+        }
+
+    }
+
     private void initComponents() {
         setBackground(PANEL_BACKGROUND_COLOR);
         setSize(1280,768);
         setVisible(true);
-
 
         edtSearch = new FlatTextInput();
 
@@ -85,6 +168,9 @@ public class ReExaminationPanel extends JPanel {
 
         btnCancel = new FlatButton();
         btnCancel.setText("Hủy bỏ");
+
+        btnUpdate = new FlatButton();
+        btnUpdate.setText("Cập nhật");
 
         txtTime = new JLabel();
         txtTime.setFont(DEFAULT_FONT);
@@ -133,9 +219,8 @@ public class ReExaminationPanel extends JPanel {
         edtSubject.setFont(DEFAULT_FONT);
         edtSubject.setToolTipText("");
 
-        edtColumn = new FlatTextInput();
+        edtColumn = new FlatTextInput("Chọn vào đây");
         edtColumn.setFont(DEFAULT_FONT);
-        edtColumn.setToolTipText("");
 
         txtColumn = new JLabel();
         txtColumn.setFont(DEFAULT_FONT);
@@ -191,26 +276,32 @@ public class ReExaminationPanel extends JPanel {
 
         final List<PhucKhaoEntity> phucKhaoEntityList = ReExaminationDAO.getReExaminations();
         Vector table = new Vector();
-        for (int i = 0; i < phucKhaoEntityList.size(); i++) {
-            Vector record = new Vector();
-            record.add(String.valueOf(i+1));
-            record.add(phucKhaoEntityList.get(i).getMssv());
-            SinhVienEntity s = StudentDAO.getStudent(phucKhaoEntityList.get(i).getMssv());
-            record.add(s.getHoVaTen());
-            MonHocEntity m = SubjectDAO.getSubject(phucKhaoEntityList.get(i).getMaMon());
-            record.add(m.getTenMon());
-            record.add(phucKhaoEntityList.get(i).getTinhTrang());
-            table.add(record);
+        if (adminPermission) {
+            for (int i = 0; i < phucKhaoEntityList.size(); i++) {
+                Vector record = new Vector();
+                record.add(String.valueOf(i+1));
+                record.add(phucKhaoEntityList.get(i).getMssv());
+                SinhVienEntity s = StudentDAO.getStudent(phucKhaoEntityList.get(i).getMssv());
+                record.add(s.getHoVaTen());
+                MonHocEntity m = SubjectDAO.getSubject(phucKhaoEntityList.get(i).getMaMon());
+                record.add(m.getTenMon());
+                record.add(phucKhaoEntityList.get(i).getTinhTrang());
+                table.add(record);
+            }
+        } else {
+            List<ClassSubject> classSubjectList = SubjectDAO.getClassSubjectsStudent(username);
+            for (int i = 0; i < classSubjectList.size(); i++) {
+                Vector record = new Vector();
+                record.add(String.valueOf(i+1));
+                record.add(classSubjectList.get(i).getId());
+                record.add(classSubjectList.get(i).getName());
+                record.add(classSubjectList.get(i).getClassID());
+                table.add(record);
+            }
         }
 
-        tblRequests.setModel(new javax.swing.table.DefaultTableModel(table, TABLE_HEADER));
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-        tblRequests.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        tblRequests.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-        tblRequests.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-        tblRequests.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-        tblRequests.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+
+        tblRequests.setModel(new javax.swing.table.DefaultTableModel(table, adminPermission?TABLE_HEADER:TABLE_HEADER_STUDENT));
         tblRequests.setDragEnabled(true);
         tblRequests.setFocusable(false);
         tblRequests.setRowHeight(40);
@@ -218,32 +309,90 @@ public class ReExaminationPanel extends JPanel {
         tblRequests.setSelectionForeground(new Color(0, 0, 0));
         tblRequests.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         scrpnlTable.setViewportView(tblRequests);
-        if (tblRequests.getColumnModel().getColumnCount() > 0) {
-            tblRequests.getColumnModel().getColumn(0).setPreferredWidth(85);
-            tblRequests.getColumnModel().getColumn(1).setPreferredWidth(130);
-            tblRequests.getColumnModel().getColumn(2).setPreferredWidth(200);
-            tblRequests.getColumnModel().getColumn(3).setPreferredWidth(210);
-            tblRequests.getColumnModel().getColumn(4).setPreferredWidth(180);
+        if (adminPermission) {
+            initTable();
+        } else {
+            initTableStudent();
+        }
+
+
+        if (!adminPermission) {
+            edtFullName.setText(StudentDAO.getStudent(username).getHoVaTen());
+            edtFullName.setEnabled(false);
+            edtStudentId.setText(username);
+            edtStudentId.setEnabled(false);
+            edtColumn.setEnabled(false);
+
+            txtTime.setVisible(false);
+            txtTo.setVisible(false);
+            edtStartTime.setVisible(false);
+            edtEndTime.setVisible(false);
+            btnUpdate.setVisible(false);
+            btnSearch.setVisible(false);
+            edtSearch.setVisible(false);
         }
 
         tblRequests.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             public void valueChanged(ListSelectionEvent event) {
-                PhucKhaoEntity pk = phucKhaoEntityList.get(Integer.valueOf(tblRequests.getValueAt(tblRequests.getSelectedRow(), 0).toString()) -1);
-                edtStudentId.setText(tblRequests.getValueAt(tblRequests.getSelectedRow(), 1).toString());
-                edtFullName.setText(tblRequests.getValueAt(tblRequests.getSelectedRow(), 2).toString());
-                edtSubject.setText(tblRequests.getValueAt(tblRequests.getSelectedRow(), 3).toString());
-                edtColumn.setText(pk.getCotDiem());
-                edtWishScore.setText(Float.toString((float) pk.getDiemMongMuon()));
-                txaReason.setText(pk.getLiDo());
-                edtStudentId.setEnabled(false);
-                edtFullName.setEnabled(false);
-                edtSubject.setEnabled(false);
-                edtColumn.setEnabled(false);
-                edtWishScore.setEnabled(false);
-                txaReason.setEnabled(false);
+                if (adminPermission) {
+                    PhucKhaoEntity pk = phucKhaoEntityList.get(Integer.valueOf(tblRequests.getValueAt(tblRequests.getSelectedRow(), 0).toString()) -1);
+                    edtStudentId.setText(tblRequests.getValueAt(tblRequests.getSelectedRow(), 1).toString());
+                    edtFullName.setText(tblRequests.getValueAt(tblRequests.getSelectedRow(), 2).toString());
+                    edtSubject.setText(tblRequests.getValueAt(tblRequests.getSelectedRow(), 3).toString());
+                    edtColumn.setText(pk.getCotDiem());
+                    edtWishScore.setText(Float.toString((float) pk.getDiemMongMuon()));
+                    txaReason.setText(pk.getLiDo());
+                    edtStudentId.setEnabled(false);
+                    edtFullName.setEnabled(false);
+                    edtSubject.setEnabled(false);
+                    edtColumn.setEnabled(false);
+                    edtWishScore.setEnabled(false);
+                    txaReason.setEnabled(false);
+                } else {
+                    edtSubject.setText(tblRequests.getValueAt(tblRequests.getSelectedRow(), 2).toString());
+                    String subjectID = tblRequests.getValueAt(tblRequests.getSelectedRow(), 1).toString();
+                    String classID = tblRequests.getValueAt(tblRequests.getSelectedRow(), 3).toString();
+                    edtCurrentScore.setText(SubjectDetailDAO.getSubjectDetailStudent(username, subjectID, classID).getDiemTong().toString());
+                    edtSubject.setEnabled(false);
+                    edtCurrentScore.setEnabled(false);
+                }
             }
         });
 
+        edtColumn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (!adminPermission) {
+                    String options[] = {"Giữa kỳ", "Cuối kỳ", "Điểm khác"};
+                    int input = JOptionPane.showOptionDialog(null, "Chọn cột điểm muốn phúc khảo:", "Chọn cột điểm", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+                    switch (input) {
+                        case 0:
+                            edtColumn.setText("GK");
+                            break;
+                        case 1:
+                            edtColumn.setText("CK");
+                            break;
+                        case 2:
+                            edtColumn.setText("Khac");
+                            break;
+                    }
+                }
+            }
+        });
+
+        btnConfirm.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (!adminPermission) {
+                    String subjectID = tblRequests.getValueAt(tblRequests.getSelectedRow(), 1).toString();
+                    System.out.printf(edtWishScore.getText());
+                    if (ReExaminationDAO.addReExamination(new PhucKhaoEntity(edtStudentId.getText(), subjectID, edtColumn.getText(), Float.parseFloat(edtWishScore.getText()), txaReason.getText(), "chua xem"))) {
+                        JOptionPane.showMessageDialog(getParent(), "Đơn phúc khảo đã được gửi đi. Vui lòng đợi cập nhật.", "Gửi phúc khảo thành công", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(getParent(), "Có lỗi xảy ra. Vui lòng thử lại sau", "Gửi thất bại", JOptionPane.INFORMATION_MESSAGE);
+
+                    }
+                }
+            }
+        });
 
         pnlDetails = new RoundedPanel(10);
         pnlDetails.setBackground(new Color(239, 239, 239));
@@ -327,6 +476,8 @@ public class ReExaminationPanel extends JPanel {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(edtEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(btnUpdate)
+                                                .addGap(63, 63, 63)
                                                 .addComponent(edtSearch)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(btnSearch)
@@ -352,6 +503,7 @@ public class ReExaminationPanel extends JPanel {
                                         .addComponent(txtTime)
                                         .addComponent(edtStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtTo)
+                                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(edtEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(edtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(12, 12, 12)
